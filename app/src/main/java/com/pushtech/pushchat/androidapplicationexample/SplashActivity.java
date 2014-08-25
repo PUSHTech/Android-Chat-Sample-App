@@ -57,6 +57,7 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
         String appId = getString(R.string.pushtech_app_id);
         String secretId = getString(R.string.pushtech_app_secret);
         String sender_id = getString(R.string.gcm_sender_id);
+        Log.d(TAG, "Sender id: " + sender_id);
         openDate = System.currentTimeMillis();
         pushSetup.start(getApplicationContext(), PushSetup.Environment.PRODUCTION,
                 this, appId, secretId, sender_id);
@@ -68,7 +69,13 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
         Log.d(TAG, "ID that Pushtech uses for identify this app in this phone: " + regId);
         if (!success) {
             // This creates a bucle that tries to complete the push setup until is successfull
-            startSetup();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startSetup();
+                }
+            }, 5000);
         } else {
             whaitUntilSplashTimeoutBeforeClosingSplash();
         }
