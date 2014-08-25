@@ -1,0 +1,28 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Push" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/pager_background</item>
+        <!--<item name="actionBarStyle">@style/Theme.Push.ActionBar</item>-->
+        <!--<item name="android:actionBarStyle">@style/Theme.Push.ActionBar</item>-->
+        <!--<item name="actionBarTabStyle">@style/ActionBarTabs</item>-->
+        <!--<item name="android:actionBarTabStyle">@style/ActionBarTabs</item>-->
+        <!--<item name="actionBarTabTextStyle">@style/ActionBarTabText</item>-->
+        <!--<item name="android:actionBarTabTextStyle">@style/ActionBarTabText</item>-->
+        <!--<item name="android:spinnerStyle">@style/StandardSpinner</item>-->
+        <!--<item name="android:spinnerItemStyle">@style/StandardSpinnerItem</item>-->
+        <!--<item name="android:spinnerDropDownItemStyle">@style/StandardSpinnerDropDownItem</item>-->
+        <!--<item name="actionBarWidgetTheme">@style/Push.ActionBar.Widget</item>-->
+        <!--<item name="actionButtonStyle">@style/Push.ActionButton</item>-->
+        <!--<item name="android:actionButtonStyle">@style/Push.ActionButton</item>-->
+        <!--<item name="android:actionOverflowButtonStyle">@style/Push.OverFlowWhite</item>-->
+        <!--<item name="actionOverflowButtonStyle">@style/Push.OverFlowWhite</item>-->
+        <!--item name="android:homeAsUpIndicator">@drawable/ic_launcher</item>
+        <item name="homeAsUpIndicator">@drawable/ic_launcher</item>-->
+    </style>
+
+    <style name="Theme.Push.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+</resources>
