@@ -1,4 +1,4 @@
-package pushchat.pushtech.com.androidapplicationexample;
+package com.pushtech.pushchat.androidapplicationexample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
