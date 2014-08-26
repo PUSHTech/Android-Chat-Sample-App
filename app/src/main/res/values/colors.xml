@@ -2,5 +2,11 @@
 <resources>
 
     <color name="pager_background">#F4F4F4</color>
+    <color name="default_background">#EFEFEF</color>
+
+    <color name="blue_push">#1BCCED</color>
+    <color name="blue_pressed">#1F9FC1</color>
+    <color name="blue_push_trans">#DD1BCCED</color>
+    <color name="grey_disabled">#C5C7CC</color>
 
 </resources>

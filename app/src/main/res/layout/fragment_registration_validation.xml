@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_verification"
+        style="@style/RegisterTopText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="@string/message_verification"
+        android:focusable="false" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/secretVerificationET"
+                style="@style/RegisterTextWithHint.EditText"
+                android:tag="et_verificationCode"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lines="1"
+                android:hint="@string/verification_code"
+                android:inputType="textNoSuggestions"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/finishSecretVerificationBtt"
+                android:tag="b_finish"
+                android:enabled="false"
+                style="@style/RegisterButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:onClick="handleFinish"
+                android:text="@string/label_finish" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

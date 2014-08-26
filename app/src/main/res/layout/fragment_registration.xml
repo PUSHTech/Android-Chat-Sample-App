@@ -1,16 +1,112 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.pushtech.com.androidapplicationexample.chat.RegistrationActivity$PlaceholderFragment">
+    android:background="@color/default_background"
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <TextView
-        android:text="This is Registration Fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/tv_signup"
+        style="@style/RegisterTopText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_message" />
 
-</RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/RegisterSectionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="15dp"
+                android:text="@string/label_country" />
+
+            <Spinner
+                android:id="@+id/countriesSpinner"
+                style="?attr/spinnerDropDownItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/spinner_bg"
+                android:padding="8dp"
+                android:spinnerMode="dialog"
+                android:tag="s_countries" />
+
+            <TextView
+                style="@style/RegisterSectionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="15dp"
+                android:text="@string/label_phone_number" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/phonePrefixEText"
+                    style="@style/RegisterTextWithHint.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:tag="et_phonePrefix" />
+
+                <EditText
+                    android:id="@+id/phoneNumberET"
+                    style="@style/RegisterTextWithHint.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/enter_phone_number_hint"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:phoneNumber="true"
+                    android:tag="et_phoneNumber" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/RegisterSectionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="15dp"
+                android:text="@string/label_user_name" />
+
+            <EditText
+                android:id="@+id/userNameET"
+                style="@style/RegisterTextWithHint.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_name_hint"
+                android:imeOptions="actionDone"
+                android:maxLength="30"
+                android:tag="et_userName" />
+
+            <Button
+                android:id="@+id/signInBtt"
+                style="@style/RegisterButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:tag="b_signin"
+                android:text="@string/label_next" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

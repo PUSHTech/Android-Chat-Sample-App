@@ -10,7 +10,7 @@ import com.pushtech.sdk.PushSetup;
 import com.pushtech.sdk.chat.manager.UserManager;
 
 import com.pushtech.pushchat.androidapplicationexample.chat.ChatListActivity;
-import com.pushtech.pushchat.androidapplicationexample.chat.RegistrationActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.registration.RegistrationActivity;
 
 
 public class SplashActivity extends Activity implements PushSetup.SetupCompleteListener {
@@ -49,8 +49,6 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
     private void preparePushSDK() {
         pushSetup = new PushSetup();
         pushSetup.init(this);
-//        PushtechPreferences.getInstance(this);
-//        RestClient.resetRestClient();
     }
 
     private void startSetup() {

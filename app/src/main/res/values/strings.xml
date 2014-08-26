@@ -4,7 +4,24 @@
     <string name="app_name">AndroidApplicationExample</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_registration">RegistrationActivity</string>
-    <string name="title_activity_chat_list">ChatListActivity</string>
+    <string name="title_activity_registration">Registration</string>
+    <string name="title_activity_chat_list">ChatList</string>
+
+    <!-- Registration -->
+    <string name="registering_blank_fields_warning_toast">All fields are mandatory, so you must fill in all of them to sign up.</string>
+    <string name="registering_error_warning_toast">Error registering user</string>
+    <string name="registering_secret_mismatch_warning_toast">Validation Secret Mismatch</string>
+    <string name="registering_error_validating_secret_warning_toast">Error validating secret</string>
+    <string name="sign_up_message">Please, verify your phone number before using PUSH Chat</string>
+    <string name="label_country">Select your country</string>
+    <string name="label_phone_number">Mobile number</string>
+    <string name="enter_phone_number_hint">Please, enter your phone</string>
+    <string name="label_user_name">Your name</string>
+    <string name="enter_name_hint">Please, enter your name</string>
+    <string name="label_next">NEXT</string>
+    <!-- Registration Verification -->
+    <string name="message_verification">Please type verification code you\'ve received by SMS / IM</string>
+    <string name="verification_code">Verification code</string>
+    <string name="label_finish">FINISH</string>
 
 </resources>
