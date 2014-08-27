@@ -10,4 +10,7 @@
     <color name="grey_disabled">#C5C7CC</color>
 
     <color name="table_text">#333333</color>
+
+    <color name="list_text_subitem">#838383</color>
+    <color name="unread_message_badge">#01caec</color>
 </resources>

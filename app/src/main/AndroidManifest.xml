@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
@@ -44,7 +43,7 @@
             android:label="@string/title_activity_registration" >
         </activity>
         <activity
-            android:name=".chat.ChatListActivity"
+            android:name=".chat.MainActivity"
             android:label="@string/title_activity_chat_list" >
         </activity>
 
@@ -74,18 +73,25 @@
             android:name=".chat.providers.ExampleUsersProvider"
             android:authorities="@string/provider_users_authority"
             android:exported="false" />
-
-        <activity
-            android:name=".chat.contacts.MyActivity"
-            android:label="@string/title_activity_my" >
-        </activity>
         <activity
             android:name=".chat.contacts.ContactsActivity"
             android:label="@string/title_activity_contacts"
-            android:parentActivityName=".chat.ChatListActivity" >
+            android:parentActivityName=".chat.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pushtech.pushchat.androidapplicationexample.chat.ChatListActivity" />
+        </activity>
+        <activity
+            android:name=".chat.chatscreens.ChatListActivity"
+            android:label="@string/title_chat_list" >
+        </activity>
+        <activity
+            android:name=".chat.chatscreens.ChatDetailActivity"
+            android:label="@string/title_chat_detail"
+            android:parentActivityName=".chat.chatscreens.ChatListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity" />
         </activity>
     </application>
 

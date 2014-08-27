@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 
-public class ChatListActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_list);
+        setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -40,18 +40,24 @@ public class ChatListActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
             case R.id.action_newChat:
-                OpenContacts();
+                openContacts();
+                return true;
+            case R.id.action_settings:
+                openSettings();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void OpenContacts() {
+    private void openContacts() {
         Intent intent = new Intent(this, ContactsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openSettings() {
+        Intent intent = new Intent(this, com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity.class);
         startActivity(intent);
     }
 

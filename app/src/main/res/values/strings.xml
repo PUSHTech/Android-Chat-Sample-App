@@ -32,5 +32,7 @@
     <string name="contacts_syncingContacts_error_warning_toast">Error syncing your contacts with server</string>
     <string name="contacts_none_contact_available">None of your contacts are using this app. Do you want to invite some?</string>
     <string name="avatar">Avatar</string>
+    <string name="title_chat_list">Chats</string>
+    <string name="title_chat_detail">Chat Detail</string>
 
 </resources>
