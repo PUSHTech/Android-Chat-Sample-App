@@ -43,4 +43,22 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="ListView">
+        <item name="android:dividerHeight">1px</item>
+        <item name="android:divider">#C1C1C1</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+    </style>
+
+    <style name="EmptyListText">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">#c5c7cd</item>
+    </style>
+
+
+    <style name="AvatarExtraLarge">
+        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+
+
 </resources>

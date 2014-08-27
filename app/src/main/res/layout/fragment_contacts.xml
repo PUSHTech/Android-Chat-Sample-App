@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ListView
+        android:id="@android:id/list"
+        android:tag="lv_contactList"
+        style="@style/ListView"
+        android:fastScrollEnabled="true"
+        android:textFilterEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+    <RelativeLayout
+        android:id="@android:id/empty"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/grey_cloud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/grey_cloud" />
+
+        <TextView
+            style="@style/EmptyListText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grey_cloud"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:padding="@dimen/activity_default_padding"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="32sp"
+            android:text="None of your contacts are using this app." />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
