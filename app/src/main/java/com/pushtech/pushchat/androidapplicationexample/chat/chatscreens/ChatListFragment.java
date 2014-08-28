@@ -5,13 +5,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.pushtech.pushchat.androidapplicationexample.R;
 
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.dummy.DummyContent;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.ChatListCursorAdapter;
 import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
-import com.pushtech.sdk.chat.manager.ChatsManager;
+import com.pushtech.sdk.chat.manager.UserManager;
+import com.pushtech.sdk.chat.model.Chat;
 
 /**
  * A list fragment representing a list of Chats. This fragment
@@ -74,9 +73,11 @@ public class ChatListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Refresh with server List of current chats.
+        UserManager.getInstance(getActivity()).startSync();
+
         Cursor c = ChatsDBAgent.getInstance(getActivity().getApplicationContext())
                 .getAllChatsCursorWithMessageInfo();
-
         setListAdapter(new ChatListCursorAdapter(getActivity(), c));
     }
 
@@ -117,7 +118,9 @@ public class ChatListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        Chat chat = ((ChatListCursorAdapter) getListAdapter()).getChat(position);
+
+        mCallbacks.onItemSelected(chat.getJid());
     }
 
     @Override

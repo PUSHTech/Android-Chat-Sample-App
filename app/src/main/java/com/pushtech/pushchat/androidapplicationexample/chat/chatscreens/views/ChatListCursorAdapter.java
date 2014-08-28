@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -31,6 +31,26 @@ public class ChatListCursorAdapter extends CursorAdapter {
         this.context = context;
     }
 
+    public Chat getChat(int position) {
+        Cursor cursor = (Cursor) getItem(position);
+        return getChat(cursor);
+    }
+
+    public ChatMessage getLastMessage(int position) {
+        Cursor cursor = (Cursor) getItem(position);
+        return getLastMessage(cursor);
+    }
+
+    private Chat getChat(Cursor cursor) {
+        ChatContentValuesOp chatContentValuesOp = new ChatContentValuesOp();
+        return chatContentValuesOp.buildFromCursor(cursor);
+    }
+
+    private ChatMessage getLastMessage(Cursor cursor) {
+        ChatMessageContentValuesOp chatMessageContentValuesOp = new ChatMessageContentValuesOp();
+        return chatMessageContentValuesOp.buildFromCursor(cursor);
+    }
+
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -47,14 +67,15 @@ public class ChatListCursorAdapter extends CursorAdapter {
         TextView tv_last_message = (TextView) view.findViewById(R.id.tv_last_message);
         ImageView iv_avatar = (ImageView) view.findViewById(R.id.iv_user_avatar);
 
-        ChatContentValuesOp chatContentValuesOp = new ChatContentValuesOp();
-        Chat chat = chatContentValuesOp.buildFromCursor(cursor);
-        ChatMessageContentValuesOp messageContentValuesOp = new ChatMessageContentValuesOp();
-        ChatMessage lastMessage = messageContentValuesOp.buildFromCursor(cursor);
+        Chat chat = getChat(cursor);
+        ChatMessage lastMessage = getLastMessage(cursor);
 
         tv_name.setText(chat.getName());
 
-        String lastMessageText = lastMessage.getText();
+        String lastMessageText = null;
+        if (lastMessage != null) {
+            lastMessageText = lastMessage.getText();
+        }
 
         if (!TextUtils.isEmpty(lastMessageText)) {
             tv_last_message.setText(lastMessageText);

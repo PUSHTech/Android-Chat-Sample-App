@@ -30,9 +30,15 @@
     <!-- Contacts -->
     <string name="contacts_syncingContacts_warning_toast">We are syncing your contacts, please wait for a bit.</string>
     <string name="contacts_syncingContacts_error_warning_toast">Error syncing your contacts with server</string>
+    <string name="contacts_createChat_error_warning_toast">Error creating chat</string>
     <string name="contacts_none_contact_available">None of your contacts are using this app. Do you want to invite some?</string>
     <string name="avatar">Avatar</string>
     <string name="title_chat_list">Chats</string>
     <string name="title_chat_detail">Chat Detail</string>
+
+    <!-- Chat Detail -->
+    <string name="chat_detail_syncingMessages_warning_error">Error retrieving messages from server</string>
+    <string name="chat_user_is_typing">is typing...</string>
+    <string name="header_conversation_view_text">Show more messages</string>
 
 </resources>

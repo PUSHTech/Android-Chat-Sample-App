@@ -13,4 +13,6 @@
 
     <color name="list_text_subitem">#838383</color>
     <color name="unread_message_badge">#01caec</color>
+
+    <color name="ab_color">#333333</color>
 </resources>
