@@ -11,10 +11,20 @@ import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.VideoChatMessage;
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
 /**
  * Created by goda87 on 29/08/14.
  */
 public class VideoIncomingViewBinder extends IncomingViewBinder {
+
+    public VideoIncomingViewBinder() {
+        super();
+    }
+
+    public VideoIncomingViewBinder(boolean isGroupChat, Map<String, String> groupComponents) {
+        super(isGroupChat, groupComponents);
+    }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {

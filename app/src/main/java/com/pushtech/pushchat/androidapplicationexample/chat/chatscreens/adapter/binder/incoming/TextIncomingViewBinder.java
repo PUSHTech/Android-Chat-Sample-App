@@ -9,10 +9,20 @@ import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.TextChatMessage;
 
+import java.util.Map;
+
 /**
  * Created by goda87 on 29/08/14.
  */
 public class TextIncomingViewBinder extends IncomingViewBinder {
+
+    public TextIncomingViewBinder() {
+        super();
+    }
+
+    public TextIncomingViewBinder(boolean isGroupChat, Map<String, String> groupComponents) {
+        super(isGroupChat, groupComponents);
+    }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {

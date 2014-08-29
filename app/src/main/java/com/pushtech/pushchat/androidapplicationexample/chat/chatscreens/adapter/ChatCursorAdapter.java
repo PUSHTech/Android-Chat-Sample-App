@@ -1,9 +1,5 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
-/**
- * Created by goda87 on 28/08/14.
- */
-
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -12,16 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.CursorViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingContactViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingLocationViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingPictureViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingVideoViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingChatMessageViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingContactViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingLocationViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingPictureViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingVideoViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.ContactIncomingViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.LocationIncomingViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.PictureIncomingViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.TextIncomingViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.VideoIncomingViewBinder;
 import com.pushtech.sdk.chat.db.contentvaluesop.ChatMessageContentValuesOp;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 
@@ -52,17 +43,17 @@ public class ChatCursorAdapter extends CursorAdapter {
     }
 
     private void registerViewBinders() {
-        mCursorViewBinders.add(new IncomingViewBinder(mIsGroupChat, mUserNameCache));
-        mCursorViewBinders.add(new IncomingPictureViewBinder(mIsGroupChat, mUserNameCache));
-        mCursorViewBinders.add(new IncomingVideoViewBinder(mIsGroupChat, mUserNameCache));
-        mCursorViewBinders.add(new IncomingLocationViewBinder(mIsGroupChat, mUserNameCache));
-        mCursorViewBinders.add(new IncomingContactViewBinder(mIsGroupChat, mUserNameCache));
+        mCursorViewBinders.add(new TextIncomingViewBinder(mIsGroupChat, mUserNameCache));
+        mCursorViewBinders.add(new PictureIncomingViewBinder(mIsGroupChat, mUserNameCache));
+        mCursorViewBinders.add(new VideoIncomingViewBinder(mIsGroupChat, mUserNameCache));
+        mCursorViewBinders.add(new LocationIncomingViewBinder(mIsGroupChat, mUserNameCache));
+        mCursorViewBinders.add(new ContactIncomingViewBinder(mIsGroupChat, mUserNameCache));
 
-        mCursorViewBinders.add(new OutgoingChatMessageViewBinder());
-        mCursorViewBinders.add(new OutgoingPictureViewBinder());
-        mCursorViewBinders.add(new OutgoingLocationViewBinder());
-        mCursorViewBinders.add(new OutgoingVideoViewBinder());
-        mCursorViewBinders.add(new OutgoingContactViewBinder());
+//        mCursorViewBinders.add(new OutgoingChatMessageViewBinder());
+//        mCursorViewBinders.add(new OutgoingPictureViewBinder());
+//        mCursorViewBinders.add(new OutgoingLocationViewBinder());
+//        mCursorViewBinders.add(new OutgoingVideoViewBinder());
+//        mCursorViewBinders.add(new OutgoingContactViewBinder());
     }
 
     @Override
