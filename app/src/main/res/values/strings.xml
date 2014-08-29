@@ -41,4 +41,6 @@
     <string name="chat_user_is_typing">is typing...</string>
     <string name="header_conversation_view_text">Show more messages</string>
 
+    <string name="view_location">View location</string>
+
 </resources>
