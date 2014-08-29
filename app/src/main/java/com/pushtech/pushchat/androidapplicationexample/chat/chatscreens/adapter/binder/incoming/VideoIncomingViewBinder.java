@@ -2,11 +2,14 @@ package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.VideoChatMessage;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by goda87 on 29/08/14.
@@ -17,7 +20,20 @@ public class VideoIncomingViewBinder extends IncomingViewBinder {
     public void bindView(View view, Context context, Cursor cursor) {
         VideoChatMessage message = (VideoChatMessage) getChatMessage(cursor);
 
-        //TODO set video views
+        ImageView videoImageView = (ImageView) view.findViewById(R.id.iv_video_from);
+        if (!TextUtils.isEmpty(message.getLocalContentPath())) {
+            Picasso.with(context)
+                    .load(message.getThumbnailUrl())
+                    .centerCrop()
+                    .resize(120, 120)
+                    .into(videoImageView);
+        } else {
+            Picasso.with(context)
+                    .load(message.getLocalContentPath())
+                    .centerCrop()
+                    .resize(120, 120)
+                    .into(videoImageView);
+        }
         setFromAndDateViews(view, context, message);
     }
 
