@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.ChatCursorAdapter;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.HeaderChatListView;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatCursorAdapter;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.HeaderChatListView;
 import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 import com.pushtech.sdk.chat.manager.MessagingManager;

@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 
 /**
- *
+ * Created by goda87 on 29/08/14.
  */
 public class ChatListCursorAdapter extends CursorAdapter {
     private Context context;
@@ -62,15 +62,15 @@ public class ChatListCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, final Cursor cursor) {
 
-        TextView tv_name = (TextView) view.findViewById(R.id.tv_user_name);
-        TextView tv_unreadMessages = (TextView) view.findViewById(R.id.tv_unread_badge);
-        TextView tv_last_message = (TextView) view.findViewById(R.id.tv_last_message);
-        ImageView iv_avatar = (ImageView) view.findViewById(R.id.iv_user_avatar);
+        TextView tvName = (TextView) view.findViewById(R.id.tv_user_name);
+        TextView tvUnreadMessages = (TextView) view.findViewById(R.id.tv_unread_badge);
+        TextView tvLastMessage = (TextView) view.findViewById(R.id.tv_last_message);
+        ImageView ivAvatar = (ImageView) view.findViewById(R.id.iv_user_avatar);
 
         Chat chat = getChat(cursor);
         ChatMessage lastMessage = getLastMessage(cursor);
 
-        tv_name.setText(chat.getName());
+        tvName.setText(chat.getName());
 
         String lastMessageText = null;
         if (lastMessage != null) {
@@ -78,16 +78,16 @@ public class ChatListCursorAdapter extends CursorAdapter {
         }
 
         if (!TextUtils.isEmpty(lastMessageText)) {
-            tv_last_message.setText(lastMessageText);
-            tv_last_message.setVisibility(View.VISIBLE);
+            tvLastMessage.setText(lastMessageText);
+            tvLastMessage.setVisibility(View.VISIBLE);
         }
 
         int numberOfUnreadMessages = chat.getUnreadMessages();
         if (numberOfUnreadMessages > 0) {
-            tv_unreadMessages.setText(Integer.toString(numberOfUnreadMessages));
-            tv_unreadMessages.setVisibility(View.VISIBLE);
+            tvUnreadMessages.setText(Integer.toString(numberOfUnreadMessages));
+            tvUnreadMessages.setVisibility(View.VISIBLE);
         } else {
-            tv_unreadMessages.setVisibility(View.GONE);
+            tvUnreadMessages.setVisibility(View.GONE);
         }
 
         int placeholder;
@@ -104,7 +104,7 @@ public class ChatListCursorAdapter extends CursorAdapter {
                 .centerCrop()
                 .error(placeholder)
                 .placeholder(placeholder)
-                .into(iv_avatar);
+                .into(ivAvatar);
     }
 
     @Override

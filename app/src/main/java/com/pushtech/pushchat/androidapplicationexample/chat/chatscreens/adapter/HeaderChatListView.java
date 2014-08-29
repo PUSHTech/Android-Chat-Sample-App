@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-
+/**
+ * Created by goda87 on 29/08/14.
+ */
 public class HeaderChatListView extends LinearLayout {
     private View progress;
     private View container;

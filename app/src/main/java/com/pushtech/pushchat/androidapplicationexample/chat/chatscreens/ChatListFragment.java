@@ -7,7 +7,7 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.ChatListCursorAdapter;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatListCursorAdapter;
 import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
 import com.pushtech.sdk.chat.manager.UserManager;
 import com.pushtech.sdk.chat.model.Chat;

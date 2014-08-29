@@ -1,31 +1,28 @@
-package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
 /**
  * Created by goda87 on 28/08/14.
  */
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.CursorViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.incoming.IncomingChatMessageViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.incoming.IncomingContactViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.incoming.IncomingLocationViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.incoming.IncomingPictureViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.incoming.IncomingVideoViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.outgoing.OutgoingChatMessageViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.outgoing.OutgoingContactViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.outgoing.OutgoingLocationViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.outgoing.OutgoingPictureViewBinder;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.views.binder.outgoing.OutgoingVideoViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.CursorViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingContactViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingLocationViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingPictureViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming.IncomingVideoViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingChatMessageViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingContactViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingLocationViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingPictureViewBinder;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.OutgoingVideoViewBinder;
 import com.pushtech.sdk.chat.db.contentvaluesop.ChatMessageContentValuesOp;
-import com.pushtech.sdk.chat.db.contract.ChatsContract;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ public class ChatCursorAdapter extends CursorAdapter {
     }
 
     private void registerViewBinders() {
-        mCursorViewBinders.add(new IncomingChatMessageViewBinder(mIsGroupChat, mUserNameCache));
+        mCursorViewBinders.add(new IncomingViewBinder(mIsGroupChat, mUserNameCache));
         mCursorViewBinders.add(new IncomingPictureViewBinder(mIsGroupChat, mUserNameCache));
         mCursorViewBinders.add(new IncomingVideoViewBinder(mIsGroupChat, mUserNameCache));
         mCursorViewBinders.add(new IncomingLocationViewBinder(mIsGroupChat, mUserNameCache));
