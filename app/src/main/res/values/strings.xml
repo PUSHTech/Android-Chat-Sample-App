@@ -45,4 +45,18 @@
     <string name="view_video">View video</string>
     <string name="view_location">View location</string>
 
+
+    <string name="menu_picture_from_camera">Image from camera</string>
+    <string name="menu_video_from_camera">Video from camera</string>
+    <string name="menu_from_gallery">From gallery</string>
+    <string name="menu_picture_from_gallery">Image from gallery</string>
+    <string name="menu_video_from_gallery">Video from gallery</string>
+    <string name="menu_location">Location</string>
+    <string name="menu_contact">Contact</string>
+
+    <string name="menu_group_info">Group info</string>
+    <string name="menu_invite_member">Add member</string>
+    <string name="menu_leave_group">Leave group</string>
+
+
 </resources>

@@ -2,14 +2,15 @@ package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatMenuActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
+import com.pushtech.sdk.chat.manager.ChatsManager;
 
 /**
  * An activity representing a list of Chats. This activity
@@ -27,7 +28,7 @@ import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsAct
  * {@link ChatListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class ChatListActivity extends FragmentActivity
+public class ChatListActivity extends ChatMenuActivity
         implements ChatListFragment.Callbacks {
 
     /**
@@ -75,6 +76,8 @@ public class ChatListActivity extends FragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.chat_detail_container, fragment)
                     .commit();
+            currentChat = ChatsManager.getInstance(getApplicationContext())
+                    .getChatWithId(getIntent().getStringExtra(ChatDetailFragment.ARG_ITEM_ID));
 
         } else {
             // In single-pane mode, simply start the detail activity
@@ -89,6 +92,7 @@ public class ChatListActivity extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.chat_list, menu);
+        //todo allow detail menu in master-detail
         return true;
     }
 
@@ -108,6 +112,7 @@ public class ChatListActivity extends FragmentActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private void openContacts() {
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
