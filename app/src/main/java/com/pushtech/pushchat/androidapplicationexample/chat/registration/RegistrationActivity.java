@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.chat.MainActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity;
 
 public class RegistrationActivity extends ActionBarActivity {
 
@@ -42,7 +42,7 @@ public class RegistrationActivity extends ActionBarActivity {
     }
 
     void registrationFinished() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ChatListActivity.class);
         startActivity(intent);
         finish();
     }

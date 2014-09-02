@@ -3,9 +3,13 @@ package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 
 /**
  * An activity representing a list of Chats. This activity
@@ -79,5 +83,37 @@ public class ChatListActivity extends FragmentActivity
             detailIntent.putExtra(ChatDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.chat_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_newChat:
+                openContacts();
+                return true;
+            case R.id.action_settings:
+                openSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void openContacts() {
+        Intent intent = new Intent(this, ContactsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openSettings() {
+        Toast.makeText(this, "openSettings", Toast.LENGTH_SHORT).show();
     }
 }

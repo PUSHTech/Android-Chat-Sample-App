@@ -42,10 +42,6 @@
             android:name=".chat.registration.RegistrationActivity"
             android:label="@string/title_activity_registration" >
         </activity>
-        <activity
-            android:name=".chat.MainActivity"
-            android:label="@string/title_activity_chat_list" >
-        </activity>
 
         <service android:name=".chat.gcm.ExampleGCMIntentService" />
 
@@ -76,10 +72,10 @@
         <activity
             android:name=".chat.contacts.ContactsActivity"
             android:label="@string/title_activity_contacts"
-            android:parentActivityName=".chat.MainActivity" >
+            android:parentActivityName=".chat.chatscreens.ChatListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pushtech.pushchat.androidapplicationexample.chat.ChatListActivity" />
+                android:value="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity" />
         </activity>
         <activity
             android:name=".chat.chatscreens.ChatListActivity"

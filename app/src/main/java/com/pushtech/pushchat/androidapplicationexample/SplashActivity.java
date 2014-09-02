@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import com.pushtech.pushchat.androidapplicationexample.chat.MainActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity;
 import com.pushtech.sdk.PushSetup;
 import com.pushtech.sdk.chat.manager.UserManager;
 
@@ -29,7 +29,7 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
         preparePushSDK();
 
         if (UserManager.getInstance(this).isUserRegistered()) {
-            startActivity(MainActivity.class);
+            startActivity(ChatListActivity.class);
             finish();
         } else {
             setContentView(R.layout.activity_splash);
