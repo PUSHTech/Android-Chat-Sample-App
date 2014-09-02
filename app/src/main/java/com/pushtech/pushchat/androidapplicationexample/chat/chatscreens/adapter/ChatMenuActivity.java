@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -151,22 +152,22 @@ public class ChatMenuActivity extends ActionBarActivity
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_PICTURE_CAMERA:
-                    MessagingManager.getInstance(getApplicationContext())
-                            .newPictureMessage(currentChat.getJid())
-                            .setPictureUri(data.getData()).send();
+                    MessagingManager.PictureMessage ms = MessagingManager.getInstance(getApplicationContext())
+                            .newPictureMessage(currentChat.getJid());
+                            ms.setPicture(getFileFromUri(data.getData())).send();
                     break;
                 case REQUEST_CODE_VIDEO_CAMERA:
                     MessagingManager.getInstance(getApplicationContext())
                             .newVideoMessage(currentChat.getJid())
-                            .setVideoUri(data.getData()).send();
+                            .setVideo(getFileFromUri(data.getData())).send();
                     break;
                 case REQUEST_CODE_PICTURE_GALLERY:
                     MessagingManager.getInstance(getApplicationContext())
                             .newPictureMessage(currentChat.getJid())
-                            .setPicture(getFileFromURI(data.getData())).send();
+                            .setPicture(getFileFromContentURI(data.getData())).send();
                     break;
                 case REQUEST_CODE_VIDEO_GALLERY:
-                    File video = getFileFromURI(data.getData());
+                    File video = getFileFromContentURI(data.getData());
                     if (video != null && video.length() < 18 * 1024 * 1024) {
                         MessagingManager.getInstance(getApplicationContext())
                                 .newVideoMessage(currentChat.getJid())
@@ -186,15 +187,21 @@ public class ChatMenuActivity extends ActionBarActivity
         }
     }
 
-    private File getFileFromURI(Uri contentUri) {
+    private File getFileFromContentURI(Uri contentUri) {
         Cursor cursor = getContentResolver().query(
                 contentUri,
-                new String[] {DATA},
+                new String[]{DATA},
                 null, null, null);
         cursor.moveToFirst();
         File file = new File(cursor.getString(cursor.getColumnIndex(DATA)));
         cursor.close();
         return file;
+    }
+
+    private File getFileFromUri(Uri uri) {
+        Log.d("GODA", "photo uri: " + uri);
+
+        return new File(uri.getPath());
     }
 
     private void prepareLocationListener() {
