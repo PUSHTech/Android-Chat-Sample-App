@@ -2,11 +2,11 @@ package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.utils.MapLauncher;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.LocationChatMessage;
 import com.squareup.picasso.Picasso;
@@ -27,8 +27,8 @@ public class LocationIncomingViewBinder extends IncomingViewBinder {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        LocationChatMessage message = (LocationChatMessage) getChatMessage(cursor);
+    public void bindView(View view, final Context context, Cursor cursor) {
+        final LocationChatMessage message = (LocationChatMessage) getChatMessage(cursor);
 
         if (message.getThumbnailUrl() != null) {
             ImageView imageImageView = (ImageView) view.findViewById(R.id.iv_location);
@@ -36,6 +36,16 @@ public class LocationIncomingViewBinder extends IncomingViewBinder {
                     load(message.getThumbnailUrl()).centerCrop().resize(120, 120)
                     .into(imageImageView);
         }
+        View locationButton = view.findViewById(R.id.location_button);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MapLauncher.launchMap(
+                        message.getLocation().getLatitude(),
+                        message.getLocation().getLongitude(),
+                        context);
+
+            }
+        });
         setFromAndDateViews(view, context, message);
     }
 

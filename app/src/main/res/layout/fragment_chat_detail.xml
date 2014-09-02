@@ -21,7 +21,7 @@
         android:transcriptMode="normal"
         android:divider="@android:color/transparent"
         android:layout_above="@+id/ll_details"
-        android:cacheColorHint="#00000000"
+        android:cacheColorHint="@android:color/transparent"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 

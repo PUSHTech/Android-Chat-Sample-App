@@ -1,7 +1,9 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,8 +20,8 @@ import com.squareup.picasso.Picasso;
  */
 public class PictureOutgoingViewBinder extends OutgoingViewBinder{
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        PictureChatMessage message = (PictureChatMessage) getChatMessage(cursor);
+    public void bindView(View view, final Context context, Cursor cursor) {
+        final PictureChatMessage message = (PictureChatMessage) getChatMessage(cursor);
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.iv_picture);
         if (!TextUtils.isEmpty(message.getLocalContentPath())) {
             Picasso.with(context)
@@ -34,6 +36,18 @@ public class PictureOutgoingViewBinder extends OutgoingViewBinder{
                     .resize(120, 120)
                     .into(pictureImageView);
         }
+        View viewImageButton = view.findViewById(R.id.image_button);
+        viewImageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                if (TextUtils.isEmpty(message.getLocalContentPath())) {
+                    intent.setDataAndType(Uri.parse(message.getContentUrl()), "image/*");
+                } else {
+                    intent.setDataAndType(Uri.parse(message.getLocalContentPath()), "image/*");
+                }
+                context.startActivity(intent);
+            }
+        });
         setFromAndDateViews(view, context, message);
     }
 
