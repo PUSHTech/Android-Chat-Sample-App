@@ -29,8 +29,7 @@ public class VideoIncomingViewBinder extends IncomingViewBinder {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         VideoChatMessage message = (VideoChatMessage) getChatMessage(cursor);
-
-        ImageView videoImageView = (ImageView) view.findViewById(R.id.iv_video_from);
+        ImageView videoImageView = (ImageView) view.findViewById(R.id.iv_video);
         if (!TextUtils.isEmpty(message.getLocalContentPath())) {
             Picasso.with(context)
                     .load(message.getThumbnailUrl())
@@ -58,6 +57,6 @@ public class VideoIncomingViewBinder extends IncomingViewBinder {
 
     @Override
     public int getViewLayout() {
-        return R.layout.item_video_message_incoming;
+        return R.layout.item_message_video_incoming;
     }
 }

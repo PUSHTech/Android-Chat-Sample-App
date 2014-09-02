@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.incoming;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,21 +9,10 @@ import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.ContactVCardChatMessage;
 
-import java.util.Map;
-
 /**
- * Created by goda87 on 29/08/14.
+ * Created by goda87 on 1/09/14.
  */
-public class ContactIncomingViewBinder extends IncomingViewBinder {
-
-    public ContactIncomingViewBinder() {
-        super();
-    }
-
-    public ContactIncomingViewBinder(boolean isGroupChat, Map<String, String> groupComponents) {
-        super(isGroupChat, groupComponents);
-    }
-
+public class ContactOutgoingViewBinder extends OutgoingViewBinder {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ContactVCardChatMessage message = (ContactVCardChatMessage) getChatMessage(cursor);
@@ -36,13 +25,13 @@ public class ContactIncomingViewBinder extends IncomingViewBinder {
     public boolean isBindableFrom(Cursor cursor) {
         boolean isBindable = true;
         ChatMessage message = getChatMessage(cursor);
-        isBindable &= ChatMessage.Direction.INCOMING.equals(message.getDirection());
+        isBindable &= ChatMessage.Direction.OUTGOING.equals(message.getDirection());
         isBindable &= message instanceof ContactVCardChatMessage;
         return isBindable;
     }
 
     @Override
     public int getViewLayout() {
-        return R.layout.item_message_contact_incoming;
+        return R.layout.item_message_contact_outgoing;
     }
 }

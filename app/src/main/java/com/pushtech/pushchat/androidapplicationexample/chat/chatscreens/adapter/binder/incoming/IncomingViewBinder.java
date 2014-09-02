@@ -56,7 +56,7 @@ public abstract class IncomingViewBinder implements CursorViewBinder {
             memberNameTextView.setText(userName);
         }
 
-        TextView dateTextView = (TextView) view.findViewById(R.id.tv_date_from);
+        TextView dateTextView = (TextView) view.findViewById(R.id.tv_date);
         Date sentDate = message.getSentDate();
         if (sentDate != null) {
             dateTextView.setText(TimeDateUtils.formatDateLong(context, sentDate.getTime()));

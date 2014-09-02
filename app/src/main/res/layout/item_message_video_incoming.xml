@@ -21,41 +21,45 @@
         android:background="@drawable/bubble_incoming"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:maxWidth="250dp"
-        android:minWidth="100dp"
-        android:paddingLeft="14dp"
         android:paddingRight="4dp"
+        android:paddingLeft="14dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp">
 
         <LinearLayout
             android:id="@+id/layout_button"
+            android:padding="17dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:maxWidth="200dp"
-            android:padding="17dp"
             android:layout_gravity="left">
 
+            <ImageView
+                android:id="@+id/iv_video"
+                android:layout_height="wrap_content"
+                android:src="@drawable/app_launcher"
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10sp" />
+
             <TextView
-                android:id="@+id/tv_contact_name"
+                android:id="@+id/tv_image_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_chat_item_button"
-                android:drawableLeft="@drawable/ic_add_contact"
-                android:text="asdf"
+                android:drawableLeft="@drawable/ic_play"
+                android:text="@string/view_video"
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:paddingTop="10dp"
-                android:maxWidth="250dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="14dp"
+                android:maxWidth="190dp"
                 android:paddingRight="14dp"
                 android:textColor="@android:color/white"
                 android:gravity="center_vertical"
                 android:drawablePadding="8dp" />
+
         </LinearLayout>
 
         <TextView
@@ -65,9 +69,10 @@
             android:text="XX:XX"
             android:layout_alignRight="@id/layout_button"
             android:layout_alignBottom="@id/layout_button"
-            android:layout_marginRight="13dp"
+            android:layout_marginRight="7dp"
             android:textSize="10sp"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:layout_gravity="bottom|right" />
     </RelativeLayout>
 
 </LinearLayout>

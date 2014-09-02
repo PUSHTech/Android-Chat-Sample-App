@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    style="@style/ListItemNoMargin">
-
-    <TextView
-        android:id="@+id/tv_member_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/group_chat_member_name"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:textStyle="bold"
-        android:paddingBottom="5sp"
-        android:visibility="gone" />
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    style="@style/ListItemNoMargin"
+    android:gravity="right">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:background="@drawable/bubble_incoming"
+        android:background="@drawable/bubble_outgoing"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="right"
         android:maxWidth="250dp"
         android:minWidth="100dp"
-        android:paddingLeft="14dp"
-        android:paddingRight="4dp"
+        android:paddingRight="14dp"
+        android:paddingLeft="4dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp">
 
@@ -33,9 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:maxWidth="200dp"
             android:padding="17dp"
-            android:layout_gravity="left">
+            android:layout_gravity="right">
 
             <TextView
                 android:id="@+id/tv_contact_name"
@@ -43,14 +32,13 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_chat_item_button"
                 android:drawableLeft="@drawable/ic_add_contact"
-                android:text="asdf"
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingTop="10dp"
-                android:maxWidth="250dp"
                 android:paddingBottom="10dp"
+                android:maxWidth="250dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
                 android:textColor="@android:color/white"

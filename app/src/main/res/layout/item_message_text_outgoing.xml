@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="left"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="right"
     style="@style/ListItemNoMargin">
-
-    <TextView
-        android:id="@+id/tv_member_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/group_chat_member_name"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:textStyle="bold"
-        android:autoLink="all"
-        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/bubble_layout"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:paddingLeft="20dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:background="@drawable/bubble_incoming">
+        android:layout_gravity="right"
+        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:background="@drawable/bubble_outgoing">
 
         <TextView
             android:id="@+id/tv_message"
@@ -39,7 +28,7 @@
             android:autoLink="all"
             android:maxWidth="250dp"
             android:layout_gravity="right"
-            android:gravity="right" />
+            android:gravity="center_vertical|right" />
 
         <TextView
             android:id="@+id/tv_date"
@@ -51,5 +40,4 @@
             android:layout_gravity="right" />
     </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -35,7 +35,7 @@
             android:layout_gravity="left">
 
             <ImageView
-                android:id="@+id/iv_location_from"
+                android:id="@+id/iv_location"
                 android:layout_height="wrap_content"
                 android:src="@drawable/app_launcher"
                 android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_date_from"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="XX:XX"

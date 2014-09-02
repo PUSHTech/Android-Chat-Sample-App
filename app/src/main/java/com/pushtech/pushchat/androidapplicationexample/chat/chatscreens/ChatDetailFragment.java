@@ -88,7 +88,6 @@ public class ChatDetailFragment extends Fragment
 
         // Show the dummy content as text in a TextView.
         if (chat != null) {
-            ((TextView) rootView.findViewById(R.id.chat_detail)).setText(chat.getJid());
             retrieveMessagesFromChat(chat.getJid(), chat.isGroupChat());
         }
         return rootView;
@@ -258,6 +257,15 @@ public class ChatDetailFragment extends Fragment
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.b_sendMessage:
+                MessagingManager.getInstance(getActivity())
+                        .newTextMessage(chat.getJid())
+                        .setText(tv.getText().toString())
+                        .send();
+                tv.setText("");
+                break;
+            default:
+        }
     }
 }

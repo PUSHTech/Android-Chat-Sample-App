@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    style="@style/ListItemNoMargin">
-
-    <TextView
-        android:id="@+id/tv_member_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/group_chat_member_name"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:textStyle="bold"
-        android:paddingBottom="5sp"
-        android:visibility="gone" />
+    style="@style/ListItemNoMargin"
+    android:gravity="right">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:background="@drawable/bubble_incoming"
+        android:background="@drawable/bubble_outgoing"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:paddingRight="4dp"
-        android:paddingLeft="14dp"
+        android:layout_gravity="right"
+        android:paddingRight="14dp"
+        android:paddingLeft="4dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp">
 
         <LinearLayout
             android:id="@+id/layout_button"
-            android:padding="17dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="left">
+            android:padding="17dp"
+            android:layout_gravity="right">
 
-            <ImageView
-                android:id="@+id/iv_video_from"
-                android:layout_height="wrap_content"
-                android:src="@drawable/app_launcher"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="10sp" />
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_video"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"
+                    android:src="@drawable/app_launcher"
+                    android:layout_width="wrap_content" />
+
+                <ProgressBar
+                    style="@android:style/Widget.ProgressBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/pb_video_me"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_image_button"
+                android:id="@+id/tv_video_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_chat_item_button"
@@ -54,25 +58,26 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="14dp"
-                android:maxWidth="190dp"
                 android:paddingRight="14dp"
                 android:textColor="@android:color/white"
                 android:gravity="center_vertical"
+                android:maxWidth="190dp"
                 android:drawablePadding="8dp" />
+
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_date_from"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="XX:XX"
+            android:layout_marginRight="17dp"
             android:layout_alignRight="@id/layout_button"
             android:layout_alignBottom="@id/layout_button"
-            android:layout_marginRight="7dp"
             android:textSize="10sp"
             android:textColor="@android:color/darker_gray"
             android:layout_gravity="bottom|right" />
     </RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>
