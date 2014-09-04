@@ -77,7 +77,7 @@ public class ChatListActivity extends ChatMenuActivity
                     .replace(R.id.chat_detail_container, fragment)
                     .commit();
             currentChat = ChatsManager.getInstance(getApplicationContext())
-                    .getChatWithId(getIntent().getStringExtra(ChatDetailFragment.ARG_ITEM_ID));
+                    .getChatWithId(id);
 
         } else {
             // In single-pane mode, simply start the detail activity

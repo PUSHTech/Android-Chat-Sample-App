@@ -33,19 +33,13 @@ public class PictureIncomingViewBinder extends IncomingViewBinder {
     public void bindView(View view, final Context context, Cursor cursor) {
         final PictureChatMessage message = (PictureChatMessage) getChatMessage(cursor);
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.iv_picture);
-        if (!TextUtils.isEmpty(message.getLocalContentPath())) {
-            Picasso.with(context)
-                    .load(message.getThumbnailUrl())
-                    .centerCrop()
-                    .resize(120, 120)
-                    .into(pictureImageView);
-        } else {
-            Picasso.with(context)
-                    .load(message.getLocalContentPath())
-                    .centerCrop()
-                    .resize(120, 120)
-                    .into(pictureImageView);
-        }
+
+        Picasso.with(context)
+                .load(message.getThumbnailUrl())
+                .centerCrop()
+                .resize(120, 120)
+                .into(pictureImageView);
+
         View viewImageButton = view.findViewById(R.id.image_button);
         viewImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

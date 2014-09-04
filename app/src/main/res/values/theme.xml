@@ -11,7 +11,7 @@
         <!--<item name="android:spinnerStyle">@style/StandardSpinner</item>-->
         <!--<item name="android:spinnerItemStyle">@style/StandardSpinnerItem</item>-->
         <!--<item name="android:spinnerDropDownItemStyle">@style/StandardSpinnerDropDownItem</item>-->
-        <!--<item name="actionBarWidgetTheme">@style/Push.ActionBar.Widget</item>-->
+        <item name="actionBarWidgetTheme">@style/Push.ActionBar.Widget</item>
         <!--<item name="actionButtonStyle">@style/Push.ActionButton</item>-->
         <!--<item name="android:actionButtonStyle">@style/Push.ActionButton</item>-->
         <!--<item name="android:actionOverflowButtonStyle">@style/Push.OverFlowWhite</item>-->
@@ -24,5 +24,23 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="Push.ActionBar.Widget" parent="@style/Theme.AppCompat">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="popupMenuStyle">@style/Push.OverflowMenu.Style</item>
+        <item name="dropDownListViewStyle">@style/Push.OverflowMenu.ListView</item>
+        <item name="android:popupMenuStyle">@style/Push.OverflowMenu.Style</item>
+        <item name="android:dropDownListViewStyle">@style/Push.OverflowMenu.ListView</item>
+    </style>
+
+    <style name="Push.OverflowMenu.Style" parent="@style/Widget.AppCompat.ListPopupWindow">
+        <item name="android:popupBackground">@color/blue_push</item>
+    </style>
+
+    <style name="Push.OverflowMenu.ListView" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <!--<item name="android:listSelector">@drawable/overflow_menu_selector</item>-->
+        <item name="android:divider">@android:color/white</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
 
 </resources>

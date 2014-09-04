@@ -1,5 +1,6 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,9 +11,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +27,9 @@ import com.pushtech.sdk.chat.manager.MessagingManager;
 import com.pushtech.sdk.chat.model.Chat;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.provider.MediaStore.MediaColumns.DATA;
 
@@ -39,8 +45,30 @@ public class ChatMenuActivity extends ActionBarActivity
     private static final int REQUEST_CODE_PICTURE_CAMERA = 1004;
     private static final int REQUEST_CODE_VIDEO_CAMERA = 1005;
 
+    private static final String PICTURES_FOLDER = "/PUSHTECH";
+    private static final String TMP_FILE_PATH = "tmpFile";
+
     protected Chat currentChat;
     private Location location;
+    private File tmpFile;
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        if (tmpFile != null) {
+            String tmpFilePath = tmpFile.getAbsolutePath();
+            savedInstanceState.putString(TMP_FILE_PATH, tmpFilePath);
+        }
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String tmpFilePath = savedInstanceState.getString(TMP_FILE_PATH);
+        if (!TextUtils.isEmpty(tmpFilePath)) {
+            tmpFile = new File(tmpFilePath);
+        }
+    }
 
     @Override
     public void onResume() {
@@ -87,7 +115,12 @@ public class ChatMenuActivity extends ActionBarActivity
 
     private void takePictureFromCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CODE_PICTURE_CAMERA);
+        tmpFile = createTmpImageFile();
+        if (tmpFile != null) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    Uri.fromFile(tmpFile));
+            startActivityForResult(intent, REQUEST_CODE_PICTURE_CAMERA);
+        }
     }
     private void takeVideoFromCamera() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -152,14 +185,16 @@ public class ChatMenuActivity extends ActionBarActivity
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_PICTURE_CAMERA:
-                    MessagingManager.PictureMessage ms = MessagingManager.getInstance(getApplicationContext())
-                            .newPictureMessage(currentChat.getJid());
-                            ms.setPicture(getFileFromUri(data.getData())).send();
+                    MessagingManager.PictureMessage ms
+                            = MessagingManager.getInstance(getApplicationContext())
+                                    .newPictureMessage(currentChat.getJid());
+                    ms.setPicture(tmpFile);
+                    ms.send();
                     break;
                 case REQUEST_CODE_VIDEO_CAMERA:
                     MessagingManager.getInstance(getApplicationContext())
                             .newVideoMessage(currentChat.getJid())
-                            .setVideo(getFileFromUri(data.getData())).send();
+                            .setVideoUri(data.getData()).send();
                     break;
                 case REQUEST_CODE_PICTURE_GALLERY:
                     MessagingManager.getInstance(getApplicationContext())
@@ -187,6 +222,27 @@ public class ChatMenuActivity extends ActionBarActivity
         }
     }
 
+    private File createTmpImageFile() {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        String path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM).getAbsolutePath() + PICTURES_FOLDER;
+        File storageDir = new File(path);
+        storageDir.mkdirs();
+        File image = null;
+        try {
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
     private File getFileFromContentURI(Uri contentUri) {
         Cursor cursor = getContentResolver().query(
                 contentUri,
@@ -199,8 +255,6 @@ public class ChatMenuActivity extends ActionBarActivity
     }
 
     private File getFileFromUri(Uri uri) {
-        Log.d("GODA", "photo uri: " + uri);
-
         return new File(uri.getPath());
     }
 

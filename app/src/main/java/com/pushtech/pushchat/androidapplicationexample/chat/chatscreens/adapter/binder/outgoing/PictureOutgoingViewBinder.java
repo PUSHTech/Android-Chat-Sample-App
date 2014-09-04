@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +15,8 @@ import com.pushtech.sdk.chat.model.message.ContactVCardChatMessage;
 import com.pushtech.sdk.chat.model.message.PictureChatMessage;
 import com.pushtech.sdk.chat.model.message.TextChatMessage;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 /**
  * Created by goda87 on 1/09/14.
@@ -40,15 +43,25 @@ public class PictureOutgoingViewBinder extends OutgoingViewBinder{
         viewImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                if (TextUtils.isEmpty(message.getLocalContentPath())) {
-                    intent.setDataAndType(Uri.parse(message.getContentUrl()), "image/*");
+                if (fileExists(message.getLocalContentPath())) {
+                    intent.setDataAndType(
+                            Uri.parse("file://" + message.getLocalContentPath()), "image/*");
                 } else {
-                    intent.setDataAndType(Uri.parse(message.getLocalContentPath()), "image/*");
+                    intent.setDataAndType(Uri.parse(message.getContentUrl()), "image/*");
                 }
                 context.startActivity(intent);
             }
         });
         setFromAndDateViews(view, context, message);
+    }
+
+    private boolean fileExists(String path) {
+        boolean exists = false;
+        if (!TextUtils.isEmpty(path)) {
+            File f = new File(path);
+            exists = f.exists();
+        }
+        return exists;
     }
 
     @Override

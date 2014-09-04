@@ -32,19 +32,13 @@ public class VideoIncomingViewBinder extends IncomingViewBinder {
     public void bindView(View view, final Context context, Cursor cursor) {
         final VideoChatMessage message = (VideoChatMessage) getChatMessage(cursor);
         ImageView videoImageView = (ImageView) view.findViewById(R.id.iv_video);
-        if (!TextUtils.isEmpty(message.getLocalContentPath())) {
-            Picasso.with(context)
-                    .load(message.getThumbnailUrl())
-                    .centerCrop()
-                    .resize(120, 120)
-                    .into(videoImageView);
-        } else {
-            Picasso.with(context)
-                    .load(message.getLocalContentPath())
-                    .centerCrop()
-                    .resize(120, 120)
-                    .into(videoImageView);
-        }
+
+        Picasso.with(context)
+                .load(message.getThumbnailUrl())
+                .centerCrop()
+                .resize(120, 120)
+                .into(videoImageView);
+
         View tv_view_video = view.findViewById(R.id.video_button);
         tv_view_video.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
