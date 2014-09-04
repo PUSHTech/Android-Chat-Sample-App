@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    style="@style/ListItemNoMargin">
+
+    <TextView
+        android:id="@+id/tv_member_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/group_chat_member_name"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:paddingBottom="5sp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:background="@drawable/bubble_incoming"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingRight="4dp"
+        android:paddingLeft="14dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp">
+
+        <LinearLayout
+            android:id="@+id/layout_button"
+            android:padding="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="left">
+
+            <ImageView
+                android:id="@+id/iv_location"
+                android:layout_height="wrap_content"
+                android:src="@drawable/app_launcher"
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10sp"/>
+
+            <TextView
+                android:id="@+id/location_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_chat_item_button"
+                android:drawableLeft="@drawable/ic_location"
+                android:text="@string/view_location"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="14dp"
+                android:maxWidth="190dp"
+                android:paddingRight="14dp"
+                android:textColor="@android:color/white"
+                android:gravity="center_vertical"
+                android:drawablePadding="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XX:XX"
+            android:layout_alignRight="@id/layout_button"
+            android:layout_alignBottom="@id/layout_button"
+            android:layout_marginRight="10dp"
+            android:textSize="10sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_gravity="bottom|right" />
+    </RelativeLayout>
+
+</LinearLayout>

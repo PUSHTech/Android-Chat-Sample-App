@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.chat.ChatListActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity;
 
 public class RegistrationActivity extends ActionBarActivity {
 

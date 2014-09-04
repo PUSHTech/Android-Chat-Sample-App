@@ -1,13 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.pushtech.com.androidapplicationexample.chat.ChatListActivity" >
-    <item android:id="@+id/action_newChat"
-        android:title="@string/action_newChat"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<item
+    android:id="@+id/action_newChat"
+    android:icon="@drawable/ic_action_new_chat"
+    app:showAsAction="always"
+    android:orderInCategory="20"
+    android:title="@string/action_newChat" />
+
+<item
+    android:id="@+id/overflow_menu"
+    android:icon="@drawable/ic_action_overflow"
+    app:showAsAction="always"
+    android:orderInCategory="999999">
+
+    <menu>
+
+        <item
+            android:id="@+id/menu_new_group"
+            android:icon="@drawable/ic_action_new_group"
+            app:showAsAction="always|withText"
+            android:title="@string/menu_new_group" />
+        <item
+            android:id="@+id/menu_msg_center"
+            android:icon="@drawable/ic_action_msg_center"
+            app:showAsAction="always|withText"
+            android:title="@string/menu_msg_center" />
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_action_settings"
+            app:showAsAction="always|withText"
+            android:title="@string/action_settings" />
+
+    </menu>
+
+</item>
+
 </menu>

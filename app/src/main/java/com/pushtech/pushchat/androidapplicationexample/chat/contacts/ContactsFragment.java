@@ -83,10 +83,9 @@ public class ContactsFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     private void contactSelected(final String chatJid) {
-        // TODO do something with selected contact.
-        Toast.makeText(getActivity(), "Chat id Selected: "+ chatJid, Toast.LENGTH_SHORT).show();
+        ContactsActivity contactsActivity = (ContactsActivity) getActivity();
+        contactsActivity.createSingleChat(chatJid);
     }
-
 
     private void showActionBarProgress(final boolean active) {
         if (getActivity() != null) {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- http://android-developers.blogspot.com.es/2009/01/why-is-my-list-black-android.html -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background">
+
+
+
+    <ListView
+        android:id="@+id/lv_chatMessages"
+        style="@style/ListView"
+        android:tag="lv_chatMessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="true"
+        android:stackFromBottom="true"
+        android:transcriptMode="normal"
+        android:divider="@android:color/transparent"
+        android:layout_above="@+id/ll_details"
+        android:cacheColorHint="@android:color/transparent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <TextView
+        android:id="@+id/typing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_push"
+        android:text="@string/chat_user_is_typing"
+        android:padding="7dp"
+        android:visibility="gone"
+        android:textColor="@android:color/white"/>
+
+    <LinearLayout
+        android:id="@+id/ll_details"
+        android:orientation="horizontal"
+        android:tag="ll_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/ab_color"
+        android:padding="8dp">
+
+        <EditText
+            style="@style/RegisterTextWithHint"
+            android:id="@+id/et_message"
+            android:textColor="@android:color/black"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:padding="8sp"
+            android:tag="et_message"
+            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+            android:background="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/b_sendMessage"
+            android:tag="b_sendMessage"
+            android:padding="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/send_icon_selector"
+            android:src="@drawable/send_icon"
+            android:onClick="handleSendMessage" />
+    </LinearLayout>
+
+</RelativeLayout>
