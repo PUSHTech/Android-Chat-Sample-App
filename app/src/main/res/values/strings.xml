@@ -38,6 +38,11 @@
     <string name="title_chat_list">Chats</string>
     <string name="title_chat_detail">Chat Detail</string>
 
+    <string name="message_group_name">Group name</string>
+    <string name="button_create_group">Create group</string>
+    <string name="message_select_contacts">Select group members</string>
+
+
     <!-- Chat Detail -->
     <string name="chat_detail_syncingMessages_warning_error">Error retrieving messages from server</string>
     <string name="chat_user_is_typing">is typing...</string>

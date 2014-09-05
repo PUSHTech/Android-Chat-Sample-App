@@ -20,7 +20,7 @@ import com.pushtech.sdk.chat.model.User;
 /**
  * Created by goda87 on 27/08/14.
  */
-public class ContactsFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ContactsFragment extends BaseContactsFragment {
 
     private ListView lv;
 
@@ -32,10 +32,10 @@ public class ContactsFragment extends Fragment implements AdapterView.OnItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
+        adapter = new ContactsListCursorAdapter(getActivity(), null, R.layout.item_contact_list);
         lv = (ListView) v.findViewById(android.R.id.list);
         lv.setOnItemClickListener(this);
-        lv.setAdapter(new ContactsListCursorAdapter(getActivity(),
-                UsersDBAgent.getInstance(getActivity()).getCursorUsersWithoutChat()));
+        lv.setAdapter(adapter);
         lv.setEmptyView(v.findViewById(android.R.id.empty));
         return v;
     }
@@ -60,10 +60,12 @@ public class ContactsFragment extends Fragment implements AdapterView.OnItemClic
                     public void gotContactsUpdated(User[] contacts) {
                         showActionBarProgress(false);
                     }
+
                     @Override
                     public void gotContactsFromDB(User[] contacts) {
 
                     }
+
                     @Override
                     public void onError(Exception exception) {
                         Toast.makeText(getActivity(),

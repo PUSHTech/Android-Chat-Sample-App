@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatMenuActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 
@@ -31,6 +29,8 @@ import com.pushtech.sdk.chat.manager.ChatsManager;
 public class ChatListActivity extends ChatMenuActivity
         implements ChatListFragment.Callbacks {
 
+    private static final int REQUEST_CODE_NEW_CHAT_SINGLE = 501;
+    private static final int REQUEST_CODE_NEW_CHAT_GROUP = 502;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -57,6 +57,8 @@ public class ChatListActivity extends ChatMenuActivity
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
+        // TODO: route to chat when comming from notification.
+        // TODO: route to chat when comming from new chat.
     }
 
     /**
@@ -91,8 +93,11 @@ public class ChatListActivity extends ChatMenuActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.chat_list, menu);
-        //todo allow detail menu in master-detail
+        if (mTwoPane) {
+            //todo allow detail menu in master-detail
+        } else {
+            getMenuInflater().inflate(R.menu.chat_list, menu);
+        }
         return true;
     }
 
@@ -108,6 +113,12 @@ public class ChatListActivity extends ChatMenuActivity
             case R.id.action_settings:
                 openSettings();
                 return true;
+            case R.id.menu_new_group:
+                openNewGroup();
+                return true;
+            case R.id.menu_msg_center:
+                openMessageCenter();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -115,10 +126,21 @@ public class ChatListActivity extends ChatMenuActivity
 
     private void openContacts() {
         Intent intent = new Intent(this, ContactsActivity.class);
-        startActivity(intent);
+        intent.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.SINGLE_CHAT); //todo use constants
+        startActivityForResult(intent, REQUEST_CODE_NEW_CHAT_SINGLE);
     }
 
     private void openSettings() {
-        Toast.makeText(this, "openSettings", Toast.LENGTH_SHORT).show();
+        showToast("openSettigns");
+    }
+
+    private void openMessageCenter() {
+        showToast("openMessageCenter");
+    }
+
+    private void openNewGroup() {
+        Intent intent = new Intent(this, ContactsActivity.class);
+        intent.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.GROUP_CHAT); //todo use constants
+        startActivityForResult(intent, REQUEST_CODE_NEW_CHAT_GROUP);
     }
 }

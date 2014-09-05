@@ -1,6 +1,5 @@
-package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,14 +13,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.utils.ChatCommunicationTrackerActivity;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 import com.pushtech.sdk.chat.manager.MessagingManager;
 import com.pushtech.sdk.chat.model.Chat;
@@ -36,7 +33,7 @@ import static android.provider.MediaStore.MediaColumns.DATA;
 /**
  * Created by goda87 on 2/09/14.
  */
-public class ChatMenuActivity extends ActionBarActivity
+public class ChatMenuActivity extends ChatCommunicationTrackerActivity
     implements LocationListener {
 
     private static final int REQUEST_CODE_PICTURE_GALLERY = 1001;
@@ -208,7 +205,7 @@ public class ChatMenuActivity extends ActionBarActivity
                                 .newVideoMessage(currentChat.getJid())
                                 .setVideo(video).send();
                     } else {
-                        Toast.makeText(this, "Video too large", Toast.LENGTH_SHORT).show();
+                        showToast("Video too large");
                     }
                     break;
                 case REQUEST_CODE_CONTACT:
@@ -220,6 +217,7 @@ public class ChatMenuActivity extends ActionBarActivity
 
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private File createTmpImageFile() {

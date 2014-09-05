@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pushtech.pushchat.androidapplicationexample.chat.contacts.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:background="@drawable/list_item_background"
@@ -33,13 +31,17 @@
             android:src="@drawable/avatar_mask_selector" />
     </FrameLayout>
 
-    <TextView
+    <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tv_name"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_height="75dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:checkMark="@drawable/checkbox_selector"
+        android:paddingLeft="20dp"
+        android:paddingRight="30dp"
+        android:background="@drawable/list_item_background"
         android:textColor="@color/table_text_selector" />
 
-</LinearLayout>
-
+</com.pushtech.pushchat.androidapplicationexample.chat.contacts.CheckableLinearLayout>
