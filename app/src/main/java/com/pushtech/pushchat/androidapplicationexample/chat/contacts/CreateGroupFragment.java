@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.sdk.chat.db.contract.UsersContract;
+import com.pushtech.sdk.chat.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +37,13 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_contacts_create_group, container, false);
-        lv = (ListView) v.findViewById(R.id.lv_groupMembers);
-
-        getLoaderManager().initLoader(ContactsActivity.GROUP_CHAT, null, this);
-
-        lv.setOnItemClickListener(this);
-
 
         adapter = new ContactsListCursorAdapter(
                 getActivity(), null, R.layout.item_contact_list_checkable);
+        getLoaderManager().initLoader(ContactsActivity.GROUP_CHAT, null, this);
+
+        lv = (ListView) v.findViewById(R.id.lv_groupMembers);
+        lv.setOnItemClickListener(this);
         lv.setAdapter(adapter);
         lv.setEmptyView(v.findViewById(android.R.id.empty));
         lv.setItemsCanFocus(false);
@@ -76,9 +75,7 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Toast.makeText(getActivity(),
-                R.string.contacts_syncingContacts_warning_toast,
-                Toast.LENGTH_SHORT).show();
+        getAppContacts();
     }
 
     private void updateUIWithValidation() {
@@ -89,20 +86,8 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
     }
 
     private String[] getSelectedContacts() {
-        List<String> contactJids = new ArrayList<String>();
         SparseBooleanArray checkedContacts = lv.getCheckedItemPositions();
-        Cursor cursor = adapter.getCursor();
-        if (cursor.moveToFirst()) {
-            int contactIndex = 0;
-            do {
-                if (checkedContacts.get(contactIndex)) {
-                    contactJids.add(cursor.getString(
-                            cursor.getColumnIndex(UsersContract.User.JID)));
-                }
-                contactIndex++;
-            } while (cursor.moveToNext());
-        }
-        return contactJids.toArray(new String[contactJids.size()]);
+        return getSelectedUsersJidsFromAdapterAsArray(checkedContacts);
     }
 
     @Override

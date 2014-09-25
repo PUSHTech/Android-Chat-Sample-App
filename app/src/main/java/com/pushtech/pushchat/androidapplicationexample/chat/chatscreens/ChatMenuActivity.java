@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 import com.pushtech.pushchat.androidapplicationexample.utils.ChatCommunicationTrackerActivity;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 import com.pushtech.sdk.chat.manager.MessagingManager;
@@ -169,7 +170,10 @@ public class ChatMenuActivity extends ChatCommunicationTrackerActivity
         //todo
     }
     private void addMemberToGroup() {
-        //todo
+        Intent i = new Intent(this, ContactsActivity.class);
+        i.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.ADD_MEMBER);
+        i.putExtra(ContactsActivity.EXTRA_PARAM_GROUP_JID, currentChat.getJid());
+        startActivity(i);
     }
     private void leaveGroup() {
         ChatsManager.getInstance(this).deleteChat(currentChat.getJid(), Chat.Type.GROUPCHAT);

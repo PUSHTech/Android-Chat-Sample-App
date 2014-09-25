@@ -72,11 +72,7 @@
             android:exported="false" />
         <activity
             android:name=".chat.contacts.ContactsActivity"
-            android:label="@string/title_activity_contacts"
-            android:parentActivityName=".chat.chatscreens.ChatListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity" />
+            android:label="@string/title_activity_contacts">
         </activity>
         <activity
             android:name=".chat.chatscreens.ChatListActivity"

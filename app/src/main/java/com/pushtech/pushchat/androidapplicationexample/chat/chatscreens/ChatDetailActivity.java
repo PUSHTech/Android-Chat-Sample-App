@@ -23,7 +23,6 @@ public class ChatDetailActivity extends ChatMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_detail);
 
-
         currentChat = ChatsManager.getInstance(getApplicationContext())
                 .getChatWithId(getIntent().getStringExtra(ChatDetailFragment.ARG_ITEM_ID));
 

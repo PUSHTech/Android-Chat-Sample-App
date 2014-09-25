@@ -31,6 +31,7 @@ public class ChatListActivity extends ChatMenuActivity
 
     private static final int REQUEST_CODE_NEW_CHAT_SINGLE = 501;
     private static final int REQUEST_CODE_NEW_CHAT_GROUP = 502;
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -58,7 +59,6 @@ public class ChatListActivity extends ChatMenuActivity
 
         // TODO: If exposing deep links into your app, handle intents here.
         // TODO: route to chat when comming from notification.
-        // TODO: route to chat when comming from new chat.
     }
 
     /**
@@ -67,27 +67,7 @@ public class ChatListActivity extends ChatMenuActivity
      */
     @Override
     public void onItemSelected(String id) {
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(ChatDetailFragment.ARG_ITEM_ID, id);
-            ChatDetailFragment fragment = new ChatDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.chat_detail_container, fragment)
-                    .commit();
-            currentChat = ChatsManager.getInstance(getApplicationContext())
-                    .getChatWithId(id);
-
-        } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, ChatDetailActivity.class);
-            detailIntent.putExtra(ChatDetailFragment.ARG_ITEM_ID, id);
-            startActivity(detailIntent);
-        }
+        openChatScreen(id);
     }
 
     @Override
@@ -124,9 +104,49 @@ public class ChatListActivity extends ChatMenuActivity
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_NEW_CHAT_GROUP:
+                case REQUEST_CODE_NEW_CHAT_SINGLE:
+                    Bundle extras = data.getExtras();
+                    openChatScreen(extras.getString(ContactsActivity.CHAT_JID_RESULT));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void openChatScreen(String jid) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle arguments = new Bundle();
+            arguments.putString(ChatDetailFragment.ARG_ITEM_ID, jid);
+            ChatDetailFragment fragment = new ChatDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.chat_detail_container, fragment)
+                    .commit();
+            currentChat = ChatsManager.getInstance(getApplicationContext())
+                    .getChatWithId(jid);
+
+        } else {
+            // In single-pane mode, simply start the detail activity
+            // for the selected item ID.
+            Intent detailIntent = new Intent(this, ChatDetailActivity.class);
+            detailIntent.putExtra(ChatDetailFragment.ARG_ITEM_ID, jid);
+            startActivity(detailIntent);
+        }
+    }
+
     private void openContacts() {
         Intent intent = new Intent(this, ContactsActivity.class);
-        intent.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.SINGLE_CHAT); //todo use constants
+        intent.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.SINGLE_CHAT);
         startActivityForResult(intent, REQUEST_CODE_NEW_CHAT_SINGLE);
     }
 
@@ -140,7 +160,7 @@ public class ChatListActivity extends ChatMenuActivity
 
     private void openNewGroup() {
         Intent intent = new Intent(this, ContactsActivity.class);
-        intent.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.GROUP_CHAT); //todo use constants
+        intent.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.GROUP_CHAT);
         startActivityForResult(intent, REQUEST_CODE_NEW_CHAT_GROUP);
     }
 }

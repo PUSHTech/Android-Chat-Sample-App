@@ -1,6 +1,8 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.contacts;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.utils.ChatCommunicationTrackerActivity;
@@ -13,6 +15,9 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
     public static final String FRAGMENT_TYPE = "fragment_type";
     public static final int SINGLE_CHAT = 22;
     public static final int GROUP_CHAT = 23;
+    public static final int ADD_MEMBER = 24;
+    public static final String CHAT_JID_RESULT = "chat_jid_result";
+    public static final String EXTRA_PARAM_GROUP_JID = "extra_param_group_jid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +28,18 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
             switch (getIntent().getIntExtra(FRAGMENT_TYPE, 0)) {
                 case SINGLE_CHAT:
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.container, ContactsFragment.newInstance())
+                            .add(R.id.container, CreateSingleChatFragment.newInstance())
                             .commit();
                     break;
                 case GROUP_CHAT:
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.container, CreateGroupFragment.newInstance())
+                            .commit();
+                    break;
+                case ADD_MEMBER:
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.container, AddMemberToGroupFragment.newInstance(
+                                    getIntent().getStringExtra(EXTRA_PARAM_GROUP_JID)))
                             .commit();
                     break;
                 default:
@@ -51,6 +62,9 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
     }
 
     void createGroupChat(final String groupName, final String[] members) {
+        for (int i = 0; i < members.length; i++) {
+            Log.d("GODA", String.format("members[%d]: %s", i, members[i]));
+        }
         try {
             setProgressBarIndeterminateVisibility(true);
             ChatsManager.getInstance(getApplicationContext())
@@ -63,13 +77,25 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
         }
     }
 
+    void addMemeberToGroup(final String chatJid, final String userJid) {
+        ChatsManager.getInstance(this).addMemberToGroupChat(chatJid, userJid);
+        setActivityResult(userJid);
+        finish();
+    }
+
+    void setActivityResult(String jid) {
+        Intent intent = this.getIntent();
+        intent.putExtra(CHAT_JID_RESULT, jid);
+        this.setResult(RESULT_OK, intent);
+    }
+
     /*
      * Called when the chat is successfully created.
      */
     @Override
     public void onCreate(Chat chat) {
         setProgressBarIndeterminateVisibility(false);
-        // todo set activity result
+        setActivityResult(chat.getJid());
         finish();
     }
 
