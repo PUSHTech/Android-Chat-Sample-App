@@ -1,7 +1,10 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.messagecenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +19,10 @@ import com.pushtech.sdk.model.PushDelivery;
  * Created by cristianrodriguezmoya on 02/05/14.
  */
 public class CampaingsAdapter extends CursorAdapter {
-    private Context context;
     private PushDeliveryContentValuesOp converter = new PushDeliveryContentValuesOp();
-    private TextView text, title, url;
 
     public CampaingsAdapter(Context context, Cursor c) {
         super(context, c);
-        this.context = context;
     }
 
 
@@ -34,11 +34,25 @@ public class CampaingsAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         PushDelivery pushDelivery = converter.buildFromCursor(cursor);
         ((TextView) view.findViewById(R.id.tv_notification_text)).setText(pushDelivery.getTitle());
         ((TextView) view.findViewById(R.id.tv_notification_title)).setText(pushDelivery.getText());
-        ((TextView) view.findViewById(R.id.tv_notification_link)).setText(pushDelivery.getUrl());
+        final String url = pushDelivery.getUrl();
+        ((TextView) view.findViewById(R.id.tv_notification_link)).setText(url);
+        if (!TextUtils.isEmpty(url)) {
+            view.findViewById(R.id.iv_notification_icon).setVisibility(View.VISIBLE);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    context.startActivity(i);
+                }
+            });
+        } else {
+            view.findViewById(R.id.iv_notification_icon).setVisibility(View.INVISIBLE);
+        }
 
     }
 }
