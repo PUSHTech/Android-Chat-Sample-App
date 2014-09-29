@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="text">#000000</color>
+    <color name="text_light">#999999</color>
+
     <color name="pager_background">#F4F4F4</color>
     <color name="default_background">#EFEFEF</color>
 
@@ -16,4 +19,7 @@
 
     <color name="ab_color">#333333</color>
     <color name="group_chat_member_name">#2C2C2C</color>
+
+
+    <color name="list_item_background">#EBECF0</color>
 </resources>

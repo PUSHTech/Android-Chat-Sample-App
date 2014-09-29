@@ -75,6 +75,10 @@
             android:label="@string/title_activity_contacts">
         </activity>
         <activity
+            android:name=".chat.settings.SettingsActivity"
+            android:label="@string/user_info" >
+        </activity>
+        <activity
             android:name=".chat.chatscreens.ChatListActivity"
             android:label="@string/title_chat_list" >
         </activity>

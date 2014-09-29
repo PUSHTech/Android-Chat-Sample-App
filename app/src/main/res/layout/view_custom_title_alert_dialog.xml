@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/view_custom_title_alert_dialog"
+        android:layout_width="wrap_content"
+        android:text="Title"
+        android:padding="15dp"
+        android:textSize="19sp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue_push" />
+
+</LinearLayout>

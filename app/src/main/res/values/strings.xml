@@ -65,5 +65,16 @@
     <string name="menu_invite_member">Add member</string>
     <string name="menu_leave_group">Leave group</string>
 
+    <!-- Settings Activity-->
+    <string name="label_log_out">LOG OUT</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="profile_photo">Profile photo</string>
+    <string name="user_info">User info</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="gallery">Gallery</string>
+    <string name="take_photo">Take photo</string>
+    <string name="delete_photo">Delete photo</string>
+
 
 </resources>
