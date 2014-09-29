@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 
 /**
@@ -42,6 +43,11 @@ public class ChatDetailActivity extends ChatMenuActivity {
                     .add(R.id.chat_detail_container, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    protected NotificationManager.TypeOfActivity getTypeOfActivity() {
+        return NotificationManager.TypeOfActivity.CHAT;
     }
 
     @Override

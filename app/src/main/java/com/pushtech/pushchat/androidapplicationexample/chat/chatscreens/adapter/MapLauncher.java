@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.utils;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;

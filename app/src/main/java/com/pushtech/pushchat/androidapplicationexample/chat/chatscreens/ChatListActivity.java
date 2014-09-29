@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.pushchat.androidapplicationexample.chat.settings.SettingsActivity;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 
@@ -60,6 +61,11 @@ public class ChatListActivity extends ChatMenuActivity
 
         // TODO: If exposing deep links into your app, handle intents here.
         // TODO: route to chat when comming from notification.
+    }
+
+    @Override
+    protected NotificationManager.TypeOfActivity getTypeOfActivity() {
+        return NotificationManager.TypeOfActivity.CHAT_LIST;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.utils;
+package com.pushtech.pushchat.androidapplicationexample.chat.notifications;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,28 +23,28 @@ public abstract class ChatCommunicationTrackerActivity extends ActionBarActivity
     @Override
     protected void onStart() {
         super.onStart();
-//        ChatCommunicationTracker.getInstance().startTracking(getApplicationContext());
+        ChatCommunicationTracker.getInstance().startTracking(getApplicationContext());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        NotificationManager.with(getApplicationContext()).setTypeOfActivity(getTypeOfActivity());
+        NotificationManager.with(getApplicationContext()).setTypeOfActivity(getTypeOfActivity());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        NotificationManager.with(getApplicationContext()).resetTypeOfActivity();
+        NotificationManager.with(getApplicationContext()).resetTypeOfActivity();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        ChatCommunicationTracker.getInstance().stopTracking(getApplicationContext());
+        ChatCommunicationTracker.getInstance().stopTracking(getApplicationContext());
     }
 
-//    protected abstract NotificationManager.TypeOfActivity getTypeOfActivity();
+    protected abstract NotificationManager.TypeOfActivity getTypeOfActivity();
 
     protected void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

@@ -76,5 +76,20 @@
     <string name="take_photo">Take photo</string>
     <string name="delete_photo">Delete photo</string>
 
+    <!-- Notifications -->
+    <string name="notif_new_message_title">Message from </string>
+    <string name="notif_group_invite_title">New group </string>
+    <string name="notif_group_deleted_title">Group deleted </string>
+    <string name="notif_group_deleted_body_1">Group </string>
+    <string name="notif_group_deleted_body_2"> has been deleted </string>
+    <string name="notif_group_left_title">Group left </string>
+    <string name="notif_group_left_body_1">Your friend </string>
+    <string name="notif_group_left_body_2"> has left the group </string>
+    <string name="notif_group_invite_body"> has invited you to the group </string>
+    <string name="notif_group_join_empty_user">Someone has joined the group </string>
+    <string name="notif_group_join_title">Your friend has joined a group </string>
+    <string name="notif_group_join_body_2"> has joined the group </string>
+    <string name="notif_group_invite_no_hostname_body">You\'ve been invited to the group </string>
+
 
 </resources>
