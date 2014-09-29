@@ -79,6 +79,10 @@
             android:label="@string/user_info" >
         </activity>
         <activity
+            android:name=".chat.messagecenter.MessageCenterActivity"
+            android:label="@string/message_center_title" >
+        </activity>
+        <activity
             android:name=".chat.chatscreens.ChatListActivity"
             android:label="@string/title_chat_list" >
         </activity>

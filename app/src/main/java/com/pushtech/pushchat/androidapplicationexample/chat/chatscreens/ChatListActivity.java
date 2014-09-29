@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.messagecenter.MessageCenterActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.pushchat.androidapplicationexample.chat.settings.SettingsActivity;
 import com.pushtech.sdk.chat.manager.ChatsManager;
@@ -163,7 +164,8 @@ public class ChatListActivity extends ChatMenuActivity
     }
 
     private void openMessageCenter() {
-        showToast("openMessageCenter");
+        Intent intent = new Intent(this, MessageCenterActivity.class);
+        startActivity(intent);
     }
 
     private void openNewGroup() {
