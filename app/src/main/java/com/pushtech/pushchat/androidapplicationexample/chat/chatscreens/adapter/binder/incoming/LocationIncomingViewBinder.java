@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.utils.MapLauncher;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.MapLauncher;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.LocationChatMessage;
 import com.squareup.picasso.Picasso;

@@ -19,7 +19,8 @@ import android.view.MenuItem;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
-import com.pushtech.pushchat.androidapplicationexample.utils.ChatCommunicationTrackerActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 import com.pushtech.sdk.chat.manager.MessagingManager;
 import com.pushtech.sdk.chat.model.Chat;
@@ -34,8 +35,8 @@ import static android.provider.MediaStore.MediaColumns.DATA;
 /**
  * Created by goda87 on 2/09/14.
  */
-public class ChatMenuActivity extends ChatCommunicationTrackerActivity
-    implements LocationListener {
+public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
+    implements LocationListener, NotificationManager.TypingEventListener {
 
     private static final int REQUEST_CODE_PICTURE_GALLERY = 1001;
     private static final int REQUEST_CODE_VIDEO_GALLERY = 1002;
@@ -295,4 +296,16 @@ public class ChatMenuActivity extends ChatCommunicationTrackerActivity
     public void onProviderDisabled(String provider) {
     }
 
+    @Override
+    public void contactIsTyping(String userJid) {
+        ((ChatDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.chat_detail_container)).typing(true);
+    }
+
+    @Override
+    public void contactStoppedTyping(String userJid) {
+        ((ChatDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.chat_detail_container)).typing(false);
+
+    }
 }

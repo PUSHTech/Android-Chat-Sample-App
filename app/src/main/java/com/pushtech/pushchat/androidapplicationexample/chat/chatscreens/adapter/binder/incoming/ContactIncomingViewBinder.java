@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.utils.VCardParser;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.VCardParser;
 import com.pushtech.sdk.chat.model.message.ChatMessage;
 import com.pushtech.sdk.chat.model.message.ContactVCardChatMessage;
 

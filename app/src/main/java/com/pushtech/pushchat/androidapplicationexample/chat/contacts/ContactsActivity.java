@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.utils.ChatCommunicationTrackerActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.sdk.chat.exception.ChatCreationException;
 import com.pushtech.sdk.chat.manager.ChatsManager;
 import com.pushtech.sdk.chat.model.Chat;
@@ -52,8 +53,12 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
                 default:
                     finish();
             }
-
         }
+    }
+
+    @Override
+    protected NotificationManager.TypeOfActivity getTypeOfActivity() {
+        return NotificationManager.TypeOfActivity.CONTACT_LIST;
     }
 
     void createSingleChat(final String chatJid) {

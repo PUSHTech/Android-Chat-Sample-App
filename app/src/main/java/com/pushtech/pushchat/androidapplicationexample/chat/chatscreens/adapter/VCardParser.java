@@ -1,4 +1,4 @@
-package com.pushtech.pushchat.androidapplicationexample.utils;
+package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;

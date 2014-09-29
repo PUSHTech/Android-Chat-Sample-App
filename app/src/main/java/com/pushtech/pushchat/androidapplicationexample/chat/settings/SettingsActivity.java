@@ -18,7 +18,8 @@ import android.widget.TextView;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.SplashActivity;
-import com.pushtech.pushchat.androidapplicationexample.utils.ChatCommunicationTrackerActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.sdk.chat.manager.UserManager;
 import com.pushtech.sdk.chat.model.UserData;
 import com.pushtech.sdk.chat.utils.preferences.UserPreferences;
@@ -56,6 +57,11 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
         initViews();
         setViews();
         setListeners();
+    }
+
+    @Override
+    protected NotificationManager.TypeOfActivity getTypeOfActivity() {
+        return NotificationManager.TypeOfActivity.SETTINGS;
     }
 
     private void initViews() {
