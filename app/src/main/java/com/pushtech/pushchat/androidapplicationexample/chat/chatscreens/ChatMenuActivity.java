@@ -167,7 +167,10 @@ public class ChatMenuActivity extends ChatCommunicationTrackerActivity
         }
     }
     private void showGroupInfo() {
-        //todo
+        Intent i = new Intent(this, ContactsActivity.class);
+        i.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.GROUP_INFO);
+        i.putExtra(ContactsActivity.EXTRA_PARAM_GROUP_JID, currentChat.getJid());
+        startActivity(i);
     }
     private void addMemberToGroup() {
         Intent i = new Intent(this, ContactsActivity.class);

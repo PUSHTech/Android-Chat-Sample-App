@@ -52,6 +52,7 @@ public abstract class BaseContactsFragment extends Fragment
                 break;
             case ContactsActivity.GROUP_CHAT:
             case ContactsActivity.ADD_MEMBER:
+            case ContactsActivity.GROUP_INFO:
                 contentUri = UsersContract.User.CONTENT_URI;
                 break;
             default:
