@@ -16,6 +16,7 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
     public static final int SINGLE_CHAT = 22;
     public static final int GROUP_CHAT = 23;
     public static final int ADD_MEMBER = 24;
+    public static final int GROUP_INFO = 25;
     public static final String CHAT_JID_RESULT = "chat_jid_result";
     public static final String EXTRA_PARAM_GROUP_JID = "extra_param_group_jid";
 
@@ -39,6 +40,12 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
                 case ADD_MEMBER:
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.container, AddMemberToGroupFragment.newInstance(
+                                    getIntent().getStringExtra(EXTRA_PARAM_GROUP_JID)))
+                            .commit();
+                    break;
+                case GROUP_INFO:
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.container, GroupInfoFragment.newInstance(
                                     getIntent().getStringExtra(EXTRA_PARAM_GROUP_JID)))
                             .commit();
                     break;

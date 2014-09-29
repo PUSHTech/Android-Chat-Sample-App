@@ -65,21 +65,18 @@ public abstract class BaseContactsFragment extends Fragment
                 selectionArgs,
                 sortOrder
         );
-        Log.d("GODA", "loader: " + loader);
         return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Change FragmentCursor
-        Log.d("GODA", "cursor lenght : " + data.getCount());
         adapter.changeCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // Avoid memory leaks by deleting references to cursor
-        Log.d("GODA", "cursor reset : " + this.getClass().getSimpleName());
         adapter.changeCursor(null);
     }
 
