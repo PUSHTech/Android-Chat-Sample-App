@@ -29,7 +29,6 @@ public final class ExampleGCMIntentService extends GCMEventIntentService {
     @Override
     protected void onCampaignDeliveryDataReceived(Context context, CampaignDelivery pushDelivery) {
 
-        Log.d("GODA", "EIIEIE " + pushDelivery.getText());
         String text = pushDelivery.getText();
         if (!TextUtils.isEmpty(pushDelivery.getUrl())) {
             text += " " + pushDelivery.getUrl();
