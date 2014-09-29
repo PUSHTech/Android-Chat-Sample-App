@@ -5,9 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatMenuActivity;
 import com.pushtech.sdk.chat.manager.ChatsManager;
-import com.pushtech.sdk.chat.model.Chat;
 
 /**
  * An activity representing a single Chat detail screen. This
@@ -24,7 +22,6 @@ public class ChatDetailActivity extends ChatMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_detail);
-
 
         currentChat = ChatsManager.getInstance(getApplicationContext())
                 .getChatWithId(getIntent().getStringExtra(ChatDetailFragment.ARG_ITEM_ID));

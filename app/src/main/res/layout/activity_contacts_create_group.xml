@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:paddingTop="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/RegisterSectionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/message_group_name" />
+
+    <EditText
+        android:id="@+id/et_groupName"
+        android:tag="et_groupName"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        style="@style/RegisterTextWithHint.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone" />
+
+    <Button
+        android:id="@+id/b_create_group"
+        android:tag="b_create_group"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        style="@style/RegisterButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/button_create_group" />
+
+    <TextView
+        style="@style/RegisterSectionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/message_select_contacts" />
+
+    <ListView
+        android:id="@+id/lv_groupMembers"
+        android:tag="lv_groupMembers"
+        style="@style/ListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+</LinearLayout>
