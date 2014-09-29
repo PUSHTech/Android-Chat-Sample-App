@@ -91,5 +91,9 @@
     <string name="notif_group_join_body_2"> has joined the group </string>
     <string name="notif_group_invite_no_hostname_body">You\'ve been invited to the group </string>
 
+    <!-- Message Center -->
+    <string name="message_center_title">Message Center</string>
+    <string name="label_delete">Delete</string>
+
 
 </resources>
