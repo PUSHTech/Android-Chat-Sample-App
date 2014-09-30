@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -21,7 +24,8 @@ import com.pushtech.sdk.chat.model.Chat;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ChatListFragment extends ListFragment {
+public class ChatListFragment extends ListFragment
+        implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -152,5 +156,32 @@ public class ChatListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        queryChatList(s);
+        return true;
+    }
+
+    private void queryChatList(String search) {
+        if(getListView().getAdapter() != null){
+            ((ChatListCursorAdapter) getListView().getAdapter()).runQueryOnBackgroundThread(search);
+        }
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        return true;
     }
 }

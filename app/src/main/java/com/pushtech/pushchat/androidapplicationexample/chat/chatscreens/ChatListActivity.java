@@ -3,11 +3,14 @@ package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatListCursorAdapter;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.messagecenter.MessageCenterActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
@@ -86,6 +89,14 @@ public class ChatListActivity extends ChatMenuActivity
             getMenuInflater().inflate(R.menu.chat_two_pane, menu);
         } else {
             getMenuInflater().inflate(R.menu.chat_list, menu);
+        }
+        ChatListFragment chatListFragment =
+                (ChatListFragment) getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        MenuItemCompat.setOnActionExpandListener(searchItem, chatListFragment);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(chatListFragment);
         }
         return super.onCreateOptionsMenu(menu);
     }
