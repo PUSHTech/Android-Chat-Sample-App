@@ -1,6 +1,7 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,11 +83,11 @@ public class ChatListActivity extends ChatMenuActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if (mTwoPane) {
-            //todo allow detail menu in master-detail
+            getMenuInflater().inflate(R.menu.chat_two_pane, menu);
         } else {
             getMenuInflater().inflate(R.menu.chat_list, menu);
         }
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -142,7 +143,10 @@ public class ChatListActivity extends ChatMenuActivity
                     .commit();
             currentChat = ChatsManager.getInstance(getApplicationContext())
                     .getChatWithId(jid);
-
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB) {
+                invalidateOptionsMenu();
+            }
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.

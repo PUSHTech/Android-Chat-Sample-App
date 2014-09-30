@@ -53,10 +53,6 @@ public class ChatDetailActivity extends ChatMenuActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.chat_detail, menu);
-        MenuItem groupActionsMenuItem = menu.findItem(R.id.overflow_menu);
-        if (currentChat.isGroupChat()) {
-            groupActionsMenuItem.setVisible(true);
-        }
         return super.onCreateOptionsMenu(menu);
     }
 }

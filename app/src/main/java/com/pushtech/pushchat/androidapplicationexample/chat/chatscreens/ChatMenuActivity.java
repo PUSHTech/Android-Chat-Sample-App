@@ -81,6 +81,30 @@ public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        activeOrDisableMenuItems(menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void activeOrDisableMenuItems(Menu menu) {
+        MenuItem groupActionsMenuItem = menu.findItem(R.id.group_overflow_menu);
+        MenuItem attachMenuItem = menu.findItem(R.id.attach_menu);
+        if (groupActionsMenuItem != null && attachMenuItem != null) {
+            if (currentChat != null) {
+                attachMenuItem.setVisible(true);
+                if (currentChat.isGroupChat()) {
+                    groupActionsMenuItem.setVisible(true);
+                } else {
+                    groupActionsMenuItem.setVisible(false);
+                }
+            } else {
+                groupActionsMenuItem.setVisible(false);
+                attachMenuItem.setVisible(false);
+            }
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_photo_camera:
