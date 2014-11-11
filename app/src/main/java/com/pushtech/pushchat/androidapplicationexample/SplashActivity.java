@@ -57,7 +57,7 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
         String sender_id = getString(R.string.gcm_sender_id);
         Log.d(TAG, "Sender id: " + sender_id);
         openDate = System.currentTimeMillis();
-        pushSetup.start(getApplicationContext(), -1,
+        pushSetup.start(getApplicationContext(), PushSetup.Environment.PRODUCTION,
                 this, appId, secretId, sender_id);
     }
 

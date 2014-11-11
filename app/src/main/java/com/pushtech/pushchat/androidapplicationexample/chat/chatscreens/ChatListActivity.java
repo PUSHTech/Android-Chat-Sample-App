@@ -1,5 +1,6 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -140,6 +141,7 @@ public class ChatListActivity extends ChatMenuActivity
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void openChatScreen(String jid) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by

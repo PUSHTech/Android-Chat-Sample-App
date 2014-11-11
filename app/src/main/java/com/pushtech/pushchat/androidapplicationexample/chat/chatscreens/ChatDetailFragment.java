@@ -177,8 +177,13 @@ public class ChatDetailFragment extends Fragment
 
                 @Override
                 protected Integer doInBackground(String... params) {
-                    return ChatsDBAgent.getInstance(getActivity())
+                    int unread = ChatsDBAgent.getInstance(getActivity())
                             .getChatFromJid(params[0]).getUnreadMessages();
+                    ChatsDBAgent.getInstance(getActivity().getApplicationContext())
+                            .flagMessagesAsReadFromChat(chat.getJid());
+                    ChatsDBAgent.getInstance(getActivity().getApplicationContext())
+                            .resetUnreadMessagesCounter(chat.getJid());
+                    return unread;
                 }
 
                 @Override
@@ -194,15 +199,7 @@ public class ChatDetailFragment extends Fragment
             }.execute(chat.getJid());
 
         } else {
-            new Thread() {
-                @Override
-                public void run() {
-                    ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                            .flagMessagesAsReadFromChat(chat.getJid());
-                    ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                            .resetUnreadMessagesCounter(chat.getJid());
-                }
-            }.start();
+            new ResetUnreadThread().start();
         }
     }
 
@@ -241,6 +238,7 @@ public class ChatDetailFragment extends Fragment
         });
         headerView.finishRequest();
         headerView.showHeader();
+        new ResetUnreadThread().start();
     }
 
     // OnMessageHistoryReceiver.onError
@@ -248,6 +246,7 @@ public class ChatDetailFragment extends Fragment
     public void onError() {
         headerView.showHeader();
         headerView.finishRequest();
+        new ResetUnreadThread().start();
     }
     // OnMessageHistoryReceiver
     @Override
@@ -266,6 +265,16 @@ public class ChatDetailFragment extends Fragment
                 tv.setText("");
                 break;
             default:
+        }
+    }
+
+    private class ResetUnreadThread extends Thread {
+        @Override
+        public void run() {
+            ChatsDBAgent.getInstance(getActivity().getApplicationContext())
+                    .flagMessagesAsReadFromChat(chat.getJid());
+            ChatsDBAgent.getInstance(getActivity().getApplicationContext())
+                    .resetUnreadMessagesCounter(chat.getJid());
         }
     }
 }
