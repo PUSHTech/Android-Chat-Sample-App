@@ -166,7 +166,7 @@ public class ChatListFragment extends ListFragment
         cursor.moveToPosition(position);
         ChatContentValuesOp chatContentValuesOp = new ChatContentValuesOp();
         Chat chat = chatContentValuesOp.buildFromCursor(cursor);
-        showToast("chat with name: " + chat.getName() + " is being deleted");
+        showToast(String.format(getString(R.string.context_menu_delete_chat),chat.getName()));
         ChatsManager.getInstance(getActivity()).deleteChat(chat);
     }
 
