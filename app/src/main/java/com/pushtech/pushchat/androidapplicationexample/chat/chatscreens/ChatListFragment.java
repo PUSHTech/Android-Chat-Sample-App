@@ -6,12 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatListCursorAdapter;
 import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
+import com.pushtech.sdk.chat.db.contentvaluesop.ChatContentValuesOp;
+import com.pushtech.sdk.chat.manager.ChatsManager;
 import com.pushtech.sdk.chat.manager.UserManager;
 import com.pushtech.sdk.chat.model.Chat;
 
@@ -20,7 +27,7 @@ import com.pushtech.sdk.chat.model.Chat;
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
  * currently being viewed in a {@link ChatDetailFragment}.
- * <p>
+ * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
@@ -43,6 +50,9 @@ public class ChatListFragment extends ListFragment
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private static final int CONTEXT_MENU_DELETE_INDEX = 0x01;
+
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -83,6 +93,7 @@ public class ChatListFragment extends ListFragment
         Cursor c = ChatsDBAgent.getInstance(getActivity().getApplicationContext())
                 .getAllChatsCursorWithMessageInfo();
         setListAdapter(new ChatListCursorAdapter(getActivity(), c));
+
     }
 
     @Override
@@ -94,6 +105,7 @@ public class ChatListFragment extends ListFragment
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -125,6 +137,41 @@ public class ChatListFragment extends ListFragment
         Chat chat = ((ChatListCursorAdapter) getListAdapter()).getChat(position);
 
         mCallbacks.onItemSelected(chat.getJid());
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        menu.add(Menu.NONE, CONTEXT_MENU_DELETE_INDEX, Menu.NONE, R.string.label_delete);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info
+                = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case CONTEXT_MENU_DELETE_INDEX:
+                deleteChat(info.position);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void deleteChat(int position) {
+        Cursor cursor = ((ChatListCursorAdapter) getListView().getAdapter()).getCursor();
+        cursor.moveToPosition(position);
+        ChatContentValuesOp chatContentValuesOp = new ChatContentValuesOp();
+        Chat chat = chatContentValuesOp.buildFromCursor(cursor);
+        showToast(String.format(getString(R.string.context_menu_delete_chat),chat.getName()));
+        ChatsManager.getInstance(getActivity()).deleteChat(chat);
+    }
+
+    private void showToast(String s) {
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -170,7 +217,7 @@ public class ChatListFragment extends ListFragment
     }
 
     private void queryChatList(String search) {
-        if(getListView().getAdapter() != null){
+        if (getListView().getAdapter() != null) {
             ((ChatListCursorAdapter) getListView().getAdapter()).runQueryOnBackgroundThread(search);
         }
     }
