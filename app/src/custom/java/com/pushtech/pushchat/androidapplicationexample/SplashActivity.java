@@ -7,7 +7,10 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -17,10 +20,13 @@ import com.pushtech.sdk.PushSetup;
 import com.pushtech.sdk.chat.manager.UserManager;
 
 import io.fabric.sdk.android.Fabric;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SplashActivity extends Activity implements PushSetup.SetupCompleteListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        AdapterView.OnItemSelectedListener {
 
     private static final String TAG = SplashActivity.class.getName();
 
@@ -33,6 +39,8 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
     private String appId;
     private String secretId;
     private String sender_id;
+    private Spinner endPointSpinner;
+    private int enviorement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +63,22 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
         appSecretEt = (EditText) findViewById(R.id.app_secret);
         senderIdEt = (EditText) findViewById(R.id.sender_id);
         registerButton = findViewById(R.id.register_app_button);
+        endPointSpinner = (Spinner) findViewById(R.id.endpoint_url);
+
         registerButton.setOnClickListener(this);
+        setSpinner();
+    }
+
+    private void setSpinner() {
+        List<String> list = new ArrayList<String>();
+        list.add("Production");
+        list.add("Local");
+        list.add("Pre");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                (this, R.layout.view_spinner, list);
+        endPointSpinner.setAdapter(dataAdapter);
+        endPointSpinner.setOnItemSelectedListener(this);
     }
 
     private void startSplashTimeOut(final long delayMillis) {
@@ -76,7 +99,7 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
 
         Log.d(TAG, "Sender id: " + sender_id);
         openDate = System.currentTimeMillis();
-        pushSetup.start(getApplicationContext(), PushSetup.Environment.PRODUCTION,
+        pushSetup.start(getApplicationContext(), enviorement,
                 this, appId, secretId, sender_id);
     }
 
@@ -123,6 +146,16 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
         } else {
             Toast.makeText(this, "The field should not be empty", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        enviorement = position * (-1);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
