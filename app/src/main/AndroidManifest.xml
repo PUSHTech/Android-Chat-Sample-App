@@ -94,6 +94,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity" />
         </activity>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="18a3a17c7eaae7237b0ba97feef3d7bd2cd84026" />
     </application>
 
 </manifest>

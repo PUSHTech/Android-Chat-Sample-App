@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.registration.RegistrationActivity;
 import com.pushtech.sdk.PushSetup;
 import com.pushtech.sdk.chat.manager.UserManager;
 
-import com.pushtech.pushchat.androidapplicationexample.chat.registration.RegistrationActivity;
+import io.fabric.sdk.android.Fabric;
 
 
 public class SplashActivity extends Activity implements PushSetup.SetupCompleteListener {
@@ -25,7 +27,7 @@ public class SplashActivity extends Activity implements PushSetup.SetupCompleteL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Fabric.with(this, new Crashlytics());
         preparePushSDK();
 
         if (UserManager.getInstance(this).isUserRegistered()) {
