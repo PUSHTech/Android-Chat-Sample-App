@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="provider_campaigns_authority">campaignsAuth</string>
+    <string name="provider_chats_authority">chatsAuth</string>
+    <string name="provider_users_authority">UserAuth</string>
+    <string name="pushtech_app_id">5461ef1085216de23200006d</string>
+    <string name="pushtech_app_secret">9c08e35298896aebd78ea5cf6a24d80f</string>
+    <string name="gcm_sender_id">674589087749</string>
+</resources>
