@@ -11,12 +11,13 @@ import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
-import com.pushtech.sdk.chat.db.contentvaluesop.ChatContentValuesOp;
-import com.pushtech.sdk.chat.db.contentvaluesop.ChatMessageContentValuesOp;
-import com.pushtech.sdk.chat.model.Chat;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
+import com.pushtech.sdk.Chat;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.GroupChat;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.SingleChat;
+import com.pushtech.sdk.TextChatMessage;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
 
 
@@ -33,22 +34,12 @@ public class ChatListCursorAdapter extends CursorAdapter {
 
     public Chat getChat(int position) {
         Cursor cursor = (Cursor) getItem(position);
-        return getChat(cursor);
+        return Chat.buildFromCursor(cursor);
     }
 
     public ChatMessage getLastMessage(int position) {
         Cursor cursor = (Cursor) getItem(position);
-        return getLastMessage(cursor);
-    }
-
-    private Chat getChat(Cursor cursor) {
-        ChatContentValuesOp chatContentValuesOp = new ChatContentValuesOp();
-        return chatContentValuesOp.buildFromCursor(cursor);
-    }
-
-    private ChatMessage getLastMessage(Cursor cursor) {
-        ChatMessageContentValuesOp chatMessageContentValuesOp = new ChatMessageContentValuesOp();
-        return chatMessageContentValuesOp.buildFromCursor(cursor);
+        return new ChatMessage().buildFromCursor(cursor);
     }
 
 
@@ -67,14 +58,15 @@ public class ChatListCursorAdapter extends CursorAdapter {
         TextView tvLastMessage = (TextView) view.findViewById(R.id.tv_last_message);
         ImageView ivAvatar = (ImageView) view.findViewById(R.id.iv_user_avatar);
 
-        Chat chat = getChat(cursor);
-        ChatMessage lastMessage = getLastMessage(cursor);
-
-        tvName.setText(chat.getName());
+        Chat chat = Chat.buildFromCursor(cursor);
+        TextChatMessage lastMessage = new TextChatMessage().buildFromCursor(cursor);
+        tvName.setText(chat.getChatName());
 
         String lastMessageText = null;
         if (lastMessage != null) {
-            lastMessageText = lastMessage.getText();
+            if (ChatMessage.ChatMessageType.TEXT.equals(lastMessage.getType())) {
+                lastMessageText = ((TextChatMessage) lastMessage).getMessage();
+            }
         }
 
         if (!TextUtils.isEmpty(lastMessageText)) {
@@ -82,22 +74,25 @@ public class ChatListCursorAdapter extends CursorAdapter {
             tvLastMessage.setVisibility(View.VISIBLE);
         }
 
-        int numberOfUnreadMessages = chat.getUnreadMessages();
+        long numberOfUnreadMessages = chat.getUnreadMessages();
         if (numberOfUnreadMessages > 0) {
-            tvUnreadMessages.setText(Integer.toString(numberOfUnreadMessages));
+            tvUnreadMessages.setText(Long.toString(numberOfUnreadMessages));
             tvUnreadMessages.setVisibility(View.VISIBLE);
         } else {
             tvUnreadMessages.setVisibility(View.GONE);
         }
 
         int placeholder;
-        if (chat.getType().equals(Chat.Type.CHAT)) {
+        String avatarUrl;
+        if (!chat.isGroupChat()) {
             placeholder = R.drawable.ab_default_avatar;
+            avatarUrl = ((SingleChat) chat).getChatIcon();
         } else {
             placeholder = R.drawable.ab_default_group_avatar;
+            avatarUrl = ((GroupChat) chat).getGroupIcon();
         }
 
-        String avatarUrl = chat.getAvatarUrl();
+
         Picasso.with(context)
                 .load(avatarUrl)
                 .fit()
@@ -115,8 +110,9 @@ public class ChatListCursorAdapter extends CursorAdapter {
             changeCursor(cursor);
             return cursor;
         }
-        Cursor cursor = ChatsDBAgent.getInstance(context)
-                .getChatsFilterByName(constraint.toString());
+        Cursor cursor = PushtechApp.with(context).getBaseManager()
+                .getChatManager().getChatsFilterByName(constraint.toString());
+
         this.changeCursor(cursor);
         return cursor;
     }

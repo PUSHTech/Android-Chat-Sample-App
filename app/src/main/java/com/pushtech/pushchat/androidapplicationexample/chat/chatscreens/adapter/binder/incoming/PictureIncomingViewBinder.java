@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
-import com.pushtech.sdk.chat.model.message.PictureChatMessage;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.PictureChatMessage;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
@@ -35,7 +33,7 @@ public class PictureIncomingViewBinder extends IncomingViewBinder {
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.iv_picture);
 
         Picasso.with(context)
-                .load(message.getThumbnailUrl())
+                .load(message.getPictureThumbnail())
                 .centerCrop()
                 .resize(120, 120)
                 .into(pictureImageView);
@@ -44,7 +42,7 @@ public class PictureIncomingViewBinder extends IncomingViewBinder {
         viewImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(message.getContentUrl()), "image/*");
+                intent.setDataAndType(Uri.parse(message.getPictureUrl()), "image/*");
                 context.startActivity(intent);
             }
         });

@@ -9,14 +9,13 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatListCursorAdapter;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.messagecenter.MessageCenterActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
 import com.pushtech.pushchat.androidapplicationexample.chat.settings.SettingsActivity;
-import com.pushtech.sdk.chat.manager.ChatsManager;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.chatAndroidExample.R;
+
 
 /**
  * An activity representing a list of Chats. This activity
@@ -25,11 +24,11 @@ import com.pushtech.sdk.chat.manager.ChatsManager;
  * lead to a {@link ChatDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
- * <p>
+ * <p/>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link ChatListFragment} and the item details
  * (if present) is a {@link ChatDetailFragment}.
- * <p>
+ * <p/>
  * This activity also implements the required
  * {@link ChatListFragment.Callbacks} interface
  * to listen for item selections.
@@ -154,9 +153,8 @@ public class ChatListActivity extends ChatMenuActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.chat_detail_container, fragment)
                     .commit();
-            currentChat = ChatsManager.getInstance(getApplicationContext())
-                    .getChatWithId(jid);
-            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            currentChat = PushtechApp.with(this).getBaseManager().getChatManager().getChatByJid(jid);
+            int currentapiVersion = Build.VERSION.SDK_INT;
             if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB) {
                 invalidateOptionsMenu();
             }

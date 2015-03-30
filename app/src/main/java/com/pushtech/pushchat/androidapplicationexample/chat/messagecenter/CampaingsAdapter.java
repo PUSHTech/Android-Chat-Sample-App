@@ -11,15 +11,16 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.db.contentvaluesop.PushDeliveryContentValuesOp;
-import com.pushtech.sdk.model.PushDelivery;
+import com.pushtech.sdk.PushDeliveriesContentValuesOps;
+import com.pushtech.sdk.PushDelivery;
+import com.pushtech.sdk.chatAndroidExample.R;
+
 
 /**
  * Created by cristianrodriguezmoya on 02/05/14.
  */
 public class CampaingsAdapter extends CursorAdapter {
-    private PushDeliveryContentValuesOp converter = new PushDeliveryContentValuesOp();
+    private PushDeliveriesContentValuesOps converter = new PushDeliveriesContentValuesOps();
 
     public CampaingsAdapter(Context context, Cursor c) {
         super(context, c);
@@ -28,7 +29,7 @@ public class CampaingsAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return  LayoutInflater.
+        return LayoutInflater.
                 from(parent.getContext()).
                 inflate(R.layout.item_campaign_messagecenter, parent, false);
     }

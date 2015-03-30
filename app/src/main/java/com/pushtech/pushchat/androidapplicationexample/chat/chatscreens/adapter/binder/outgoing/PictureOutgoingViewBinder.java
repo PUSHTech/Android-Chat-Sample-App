@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
-import com.pushtech.sdk.chat.model.message.ContactVCardChatMessage;
-import com.pushtech.sdk.chat.model.message.PictureChatMessage;
-import com.pushtech.sdk.chat.model.message.TextChatMessage;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.PictureChatMessage;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -26,15 +23,15 @@ public class PictureOutgoingViewBinder extends OutgoingViewBinder{
     public void bindView(View view, final Context context, Cursor cursor) {
         final PictureChatMessage message = (PictureChatMessage) getChatMessage(cursor);
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.iv_picture);
-        if (!TextUtils.isEmpty(message.getLocalContentPath())) {
+        if (!TextUtils.isEmpty(message.getLocalPath())) {
             Picasso.with(context)
-                    .load(message.getThumbnailUrl())
+                    .load(message.getPictureThumbnail())
                     .centerCrop()
                     .resize(120, 120)
                     .into(pictureImageView);
         } else {
             Picasso.with(context)
-                    .load(message.getLocalContentPath())
+                    .load(message.getLocalPath())
                     .centerCrop()
                     .resize(120, 120)
                     .into(pictureImageView);
@@ -43,11 +40,11 @@ public class PictureOutgoingViewBinder extends OutgoingViewBinder{
         viewImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                if (fileExists(message.getLocalContentPath())) {
+                if (fileExists(message.getLocalPath())) {
                     intent.setDataAndType(
-                            Uri.parse("file://" + message.getLocalContentPath()), "image/*");
+                            Uri.parse("file://" + message.getLocalPath()), "image/*");
                 } else {
-                    intent.setDataAndType(Uri.parse(message.getContentUrl()), "image/*");
+                    intent.setDataAndType(Uri.parse(message.getPictureUrl()), "image/*");
                 }
                 context.startActivity(intent);
             }

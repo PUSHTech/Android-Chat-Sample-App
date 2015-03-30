@@ -6,7 +6,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity">
+    tools:context="com.pushtech.chatAndroidExample.chat.chatscreens.ChatListActivity">
 
     <!--
     This layout is a two-pane layout for the Chats
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/chat_list"
-        android:name="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListFragment"
+        android:name="com.pushtech.chatAndroidExample.chat.chatscreens.ChatListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

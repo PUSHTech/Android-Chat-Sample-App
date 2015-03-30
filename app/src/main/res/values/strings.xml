@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">PUSHTech&#8482; Chat</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="action_newChat">New Chat</string>
@@ -24,7 +23,7 @@
     <string name="enter_name_hint">Please, enter your name</string>
     <string name="label_next">NEXT</string>
     <!-- Registration Verification -->
-    <string name="message_verification">Please type verification code you\'ve received by SMS / IM</string>
+    <string name="message_verification">Please type verification code you\'ve received by SMS</string>
     <string name="verification_code">Verification code</string>
     <string name="label_finish">FINISH</string>
     <string name="title_activity_my">MyActivity</string>
@@ -65,7 +64,11 @@
     <string name="menu_group_info">Group info</string>
     <string name="menu_invite_member">Add member</string>
     <string name="menu_leave_group">Leave group</string>
-    <string name ="context_menu_delete_chat">Chat with name: %s is being deleted</string>
+
+    <!-- CHat delete-->
+    <string name="context_menu_delete_chat">Chat with name: %s is being deleted</string>
+    <string name="context_menu_delete_succes_chat">Chat with name : %s deleted</string>
+    <string name="context_menu_delete_error_chat">Error deleting chat with name: %s</string>
 
     <!-- Settings Activity-->
     <string name="label_log_out">LOG OUT</string>

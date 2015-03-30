@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.db.contentvaluesop.UserContentValuesOp;
-import com.pushtech.sdk.chat.model.User;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.User;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 
 /**
@@ -29,15 +28,15 @@ public class CreateSingleChatFragment extends BaseContactsFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
-
-        getLoaderManager().initLoader(ContactsActivity.SINGLE_CHAT, null, this);
-        adapter = new ContactsListCursorAdapter(getActivity(), null, R.layout.item_contact_list);
+        Cursor c = PushtechApp.with(getActivity()).getBaseManager().getUserManager().getContactsWithoutChat();
+        adapter = new ContactsListCursorAdapter(getActivity(), c, R.layout.item_contact_list);
         lv = (ListView) v.findViewById(android.R.id.list);
         lv.setOnItemClickListener(this);
         lv.setAdapter(adapter);
         lv.setEmptyView(v.findViewById(android.R.id.empty));
         return v;
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

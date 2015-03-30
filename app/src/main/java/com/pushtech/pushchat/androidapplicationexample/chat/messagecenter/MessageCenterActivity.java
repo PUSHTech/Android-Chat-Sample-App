@@ -12,13 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
-import com.pushtech.sdk.db.agent.PushDeliveriesDBAgent;
-import com.pushtech.sdk.db.contentvaluesop.PushDeliveryContentValuesOp;
-import com.pushtech.sdk.model.CampaignDelivery;
-import com.pushtech.sdk.model.PushDelivery;
+import com.pushtech.sdk.DeliveryManager;
+import com.pushtech.sdk.PushDeliveriesContentValuesOps;
+import com.pushtech.sdk.PushDelivery;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 /**
  * Created by goda87 on 29/09/14.
@@ -28,15 +28,16 @@ public class MessageCenterActivity extends ChatCommunicationTrackerActivity {
     private static final int CONTEXT_MENU_DELETE_INDEX = 1;
     private ListView listViewCampaigns;
     private Cursor cursorCampaings;
-    private PushDeliveryContentValuesOp converter = new PushDeliveryContentValuesOp();
+    private PushDeliveriesContentValuesOps converter = new PushDeliveriesContentValuesOps();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_center);
         listViewCampaigns = (ListView) findViewById(R.id.list_views_campaings);
-        cursorCampaings = PushDeliveriesDBAgent.getInstance(this).getAllCampaignsCursor();
-        listViewCampaigns.setAdapter(new CampaingsAdapter(this,cursorCampaings));
+        cursorCampaings = PushtechApp.with(this).getDeliveriesManager().getDeliveryCursor(this,
+                DeliveryManager.DELIVERIES_TYPE.PLATFORM);
+        listViewCampaigns.setAdapter(new CampaingsAdapter(this, cursorCampaings));
         listViewCampaigns.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,7 +89,7 @@ public class MessageCenterActivity extends ChatCommunicationTrackerActivity {
 
     private void deleteCampaign(int position) {
         cursorCampaings.moveToPosition(position);
-        CampaignDelivery pushDelivery = converter.buildFromCursor(cursorCampaings);
-        PushDeliveriesDBAgent.getInstance(this).deleteCampaign(pushDelivery);
+        PushDelivery pushDelivery = converter.buildFromCursor(cursorCampaings);
+        PushtechApp.with(this).getDeliveriesManager().remove(this, pushDelivery);
     }
 }

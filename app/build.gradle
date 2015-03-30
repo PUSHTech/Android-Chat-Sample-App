@@ -1,59 +1,27 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 19
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "pushchat.pushtech.com.androidapplicationexample"
+        applicationId "com.pushtech.androidapplicationexample"
         minSdkVersion 9
         targetSdkVersion 19
-        versionCode 2
-        versionName "2.0"
+        versionCode 3
+        versionName "2.3"
     }
-    signingConfigs {
-        release {
-            storeFile file("../../PusPublicAppTestKey.jks")
-            storePassword "push2015"
-            keyAlias "Push"
-            keyPassword "push2015"
-        }
-    }
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
 
-        }
-    }
-    productFlavors {
-        custom {
-
-        }
-        demo{
-            ext.betaDistributionEmails = "qa.ingravity@gmail.com"
-        }
-
-    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // You must install or update the Google Repository through the SDK manager to use this dependency.
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
-    // You must install or update the Google Repository through the SDK manager to use this dependency.
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:appcompat-v7:19.+'
-    // You must install or update the Google Repository through the SDK manager to use this dependency.
     compile 'com.google.android.gms:play-services:4.2.+'
     compile 'com.squareup.retrofit:retrofit:1.6.+'
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:19.+'
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
     compile 'com.squareup.picasso:picasso:2.2.0'
     compile 'com.googlecode.ez-vcard:ez-vcard:0.9.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
-        transitive = true;
-    }
-    compile files('libs/PushtechChatSDK-15c16a19493e7ee0ff2edfff5157ae27.jar')
+
 }

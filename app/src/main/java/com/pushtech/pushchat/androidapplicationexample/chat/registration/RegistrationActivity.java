@@ -1,14 +1,17 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.registration;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity;
+import com.pushtech.sdk.Callbacks.AutomaticUserValidationCallback;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.chatAndroidExample.R;
 
-public class RegistrationActivity extends ActionBarActivity {
+
+public class RegistrationActivity extends ActionBarActivity implements AutomaticUserValidationCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +20,11 @@ public class RegistrationActivity extends ActionBarActivity {
         setContentView(R.layout.activity_registration);
 
         if (savedInstanceState == null) {
-            if (true) { //if not registered
-                openRegistrationFragment();
-            } else if (true) { // if registered but not confirmed
-                openRegistrationFragment();
-                openRegistrationValidationFragment();
-            } else { // if already registered
-                registrationFinished();
-            }
+            openRegistrationFragment();
         }
+        PushtechApp.with(this)
+                .getChatRegister()
+                .setAutomaticUserValidationCallback(this);
     }
 
     private void openRegistrationFragment() {
@@ -45,5 +44,10 @@ public class RegistrationActivity extends ActionBarActivity {
         Intent intent = new Intent(this, ChatListActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onValidateUser() {
+        registrationFinished();
     }
 }

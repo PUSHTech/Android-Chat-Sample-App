@@ -5,10 +5,10 @@ import android.database.Cursor;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.MapLauncher;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
-import com.pushtech.sdk.chat.model.message.LocationChatMessage;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.LocationChatMessage;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
@@ -30,18 +30,18 @@ public class LocationIncomingViewBinder extends IncomingViewBinder {
     public void bindView(View view, final Context context, Cursor cursor) {
         final LocationChatMessage message = (LocationChatMessage) getChatMessage(cursor);
 
-        if (message.getThumbnailUrl() != null) {
+        if (message.getLocationThumbnail() != null) {
             ImageView imageImageView = (ImageView) view.findViewById(R.id.iv_location);
             Picasso.with(context).
-                    load(message.getThumbnailUrl()).centerCrop().resize(120, 120)
+                    load(message.getLocationThumbnail()).centerCrop().resize(120, 120)
                     .into(imageImageView);
         }
         View locationButton = view.findViewById(R.id.location_button);
         locationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 MapLauncher.launchMap(
-                        message.getLocation().getLatitude(),
-                        message.getLocation().getLongitude(),
+                        message.getLatitude(),
+                        message.getLongitude(),
                         context);
 
             }

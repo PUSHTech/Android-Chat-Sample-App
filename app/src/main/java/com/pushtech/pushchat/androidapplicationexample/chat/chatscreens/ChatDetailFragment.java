@@ -12,18 +12,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.pushtech.pushchat.androidapplicationexample.R;
 
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatCursorAdapter;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.HeaderChatListView;
-import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
-import com.pushtech.sdk.chat.manager.ChatsManager;
-import com.pushtech.sdk.chat.manager.MessagingManager;
-import com.pushtech.sdk.chat.model.Chat;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
-import com.pushtech.sdk.chat.service.CommunicationService;
+import com.pushtech.sdk.Chat;
+import com.pushtech.sdk.ChatManager;
+import com.pushtech.sdk.HistoricCallback;
+import com.pushtech.sdk.MessageManager;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.chatAndroidExample.R;
+
 
 /**
  * A fragment representing a single Chat detail screen.
@@ -34,8 +33,7 @@ import com.pushtech.sdk.chat.service.CommunicationService;
 public class ChatDetailFragment extends Fragment
         implements View.OnClickListener,
         HeaderChatListView.OnHeaderChatClicked,
-        ChatsManager.OnMessageHistoryReceiver,
-        MessagingManager.OnMessagesRetrievedListener {
+        HistoricCallback {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -60,36 +58,35 @@ public class ChatDetailFragment extends Fragment
     private HeaderChatListView headerView;
     private View sendButton;
     private boolean justEntered = true;
+    private ChatManager chatManager;
+    private MessageManager messageManager;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public ChatDetailFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        chatManager = PushtechApp.with(getActivity()).getBaseManager().getChatManager();
+        messageManager = PushtechApp.with(getActivity()).getBaseManager().getMessageManager();
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            chat = ChatsManager.getInstance(getActivity().getApplicationContext())
-                    .getChatWithId(getArguments().getString(ARG_ITEM_ID));
+            chat = chatManager.getChatByJid(getArguments().getString(ARG_ITEM_ID));
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chat_detail, container, false);
-
-        // Show the dummy content as text in a TextView.
-        if (chat != null) {
-            retrieveMessagesFromChat(chat.getJid(), chat.isGroupChat());
-        }
         return rootView;
     }
 
@@ -113,10 +110,12 @@ public class ChatDetailFragment extends Fragment
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().isEmpty()) {
                     sendButton.setEnabled(false);
-                    CommunicationService.sendUserStoppedTypingToUser(getActivity(), chat.getJid());
+                    PushtechApp.with(getActivity()).getBaseManager().getCommunicationService()
+                            .stopTyping(chat.getJid());
                 } else {
                     sendButton.setEnabled(true);
-                    CommunicationService.sendUserIsTypingToUser(getActivity(), chat.getJid());
+                    PushtechApp.with(getActivity()).getBaseManager().getCommunicationService()
+                            .startTyping(chat.getJid());
                 }
             }
 
@@ -132,12 +131,13 @@ public class ChatDetailFragment extends Fragment
     public void onResume() {
         super.onResume();
         justEntered = true;
-        ChatMessage localmessage = ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                .getFirstLocalMessage(chat.getJid());
-        if (localmessage == null) {
-            ChatsManager.getInstance(getActivity().getApplicationContext())
-                    .getChatHistory(chat.getJid(), chat.isGroupChat());
+        Cursor cursor = messageManager.getMessagesFromChat(chat.getJid());
+        gotChatMessages(cursor, chat.isGroupChat());
+        if (!cursor.moveToFirst()) {
+            messageManager.getHistoricMessages(chat.getJid(), chat.isGroupChat(), this);
             headerView.hideHeader();
+        } else {
+            headerView.showHeader();
         }
     }
 
@@ -147,8 +147,8 @@ public class ChatDetailFragment extends Fragment
         new Thread() {
             @Override
             public void run() {
-                ChatsDBAgent.getInstance(getActivity()).flagMessagesAsReadFromChat(chat.getJid());
-                ChatsDBAgent.getInstance(getActivity()).resetUnreadMessagesCounter(chat.getJid());
+                messageManager.markAllMessageRead(chat.getJid());
+                chatManager.resetUnreadMessages(chat.getJid());
             }
         }.start();
         super.onPause();
@@ -162,9 +162,6 @@ public class ChatDetailFragment extends Fragment
         }
     }
 
-    private void retrieveMessagesFromChat(final String chatJid, final boolean isGroupChat) {
-        MessagingManager.getInstance(getActivity()).getMessagesFromChat(chatJid, this);
-    }
 
     protected void gotChatMessages(final Cursor chatMessagesCursor, boolean isGroupChat) {
         final ChatCursorAdapter adapter
@@ -177,12 +174,9 @@ public class ChatDetailFragment extends Fragment
 
                 @Override
                 protected Integer doInBackground(String... params) {
-                    int unread = ChatsDBAgent.getInstance(getActivity())
-                            .getChatFromJid(params[0]).getUnreadMessages();
-                    ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                            .flagMessagesAsReadFromChat(chat.getJid());
-                    ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                            .resetUnreadMessagesCounter(chat.getJid());
+
+                    int unread = chatManager.getUnreadMessages(chat.getJid());
+                    messageManager.markAllMessageRead(chat.getJid());
                     return unread;
                 }
 
@@ -203,37 +197,20 @@ public class ChatDetailFragment extends Fragment
         }
     }
 
-    //OnMessagesRetrievedListener
-    @Override
-    public void gotMessagesFromChat(String s, Cursor cursor) {
-        gotChatMessages(cursor, chat.isGroupChat());
-    }
-
-    //OnMessagesRetrievedListener.onError
-    @Override
-    public void onError(Exception e) {
-        Toast.makeText(getActivity(),
-                R.string.chat_detail_syncingMessages_warning_error,
-                Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onHeaderChatClicked() {
-        ChatMessage localMessage = ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                .getFirstLocalMessage(chat.getJid());
-        if (localMessage != null) {
-            ChatsManager.getInstance(getActivity()).getChatHistory(chat.isGroupChat(),
-                    chat.getJid(), NUM_OF_MESSAGE_HISTORY, localMessage.getMessageId(), this);
-        }
+        messageManager.getHistoricMessages(chat.getJid(), chat.isGroupChat(), this);
     }
-    // OnMessageHistoryReceiver
+
+
     @Override
-    public void OnSuccessHistory(final int numMessages) {
+    public void onSuccessHistoric(final int numOfMessage) {
         lv_chatMessages.post(new Runnable() {
             @Override
             public void run() {
                 ListView listView = lv_chatMessages;
-                listView.setSelection(numMessages);
+                listView.setSelection(numOfMessage);
             }
         });
         headerView.finishRequest();
@@ -241,13 +218,6 @@ public class ChatDetailFragment extends Fragment
         new ResetUnreadThread().start();
     }
 
-    // OnMessageHistoryReceiver.onError
-    @Override
-    public void onError() {
-        headerView.showHeader();
-        headerView.finishRequest();
-        new ResetUnreadThread().start();
-    }
     // OnMessageHistoryReceiver
     @Override
     public void onNoMoreMessages() {
@@ -258,7 +228,7 @@ public class ChatDetailFragment extends Fragment
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.b_sendMessage:
-                MessagingManager.getInstance(getActivity())
+                messageManager
                         .newTextMessage(chat.getJid())
                         .setText(tv.getText().toString())
                         .send();
@@ -268,13 +238,18 @@ public class ChatDetailFragment extends Fragment
         }
     }
 
+    @Override
+    public void onError(PushtechError error) {
+        headerView.showHeader();
+        headerView.finishRequest();
+        new ResetUnreadThread().start();
+    }
+
     private class ResetUnreadThread extends Thread {
         @Override
         public void run() {
-            ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                    .flagMessagesAsReadFromChat(chat.getJid());
-            ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                    .resetUnreadMessagesCounter(chat.getJid());
+            messageManager.markAllMessageRead(chat.getJid());
+
         }
     }
 }

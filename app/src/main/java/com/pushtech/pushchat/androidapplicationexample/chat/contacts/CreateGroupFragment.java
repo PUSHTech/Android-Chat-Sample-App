@@ -1,6 +1,5 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.contacts;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,14 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.db.contract.UsersContract;
-import com.pushtech.sdk.chat.model.User;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.chatAndroidExample.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by goda87 on 4/09/14.
@@ -33,14 +28,16 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
         return new CreateGroupFragment();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_contacts_create_group, container, false);
 
         adapter = new ContactsListCursorAdapter(
-                getActivity(), null, R.layout.item_contact_list_checkable);
-        getLoaderManager().initLoader(ContactsActivity.GROUP_CHAT, null, this);
+                getActivity(), PushtechApp.with(getActivity())
+                .getBaseManager()
+                .getUserManager().getAllContactsCursor(), R.layout.item_contact_list_checkable);
 
         lv = (ListView) v.findViewById(R.id.lv_groupMembers);
         lv.setOnItemClickListener(this);
@@ -51,6 +48,7 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
 
         bCreateGroup = v.findViewById(R.id.b_create_group);
         bCreateGroup.setOnClickListener(this);
+        bCreateGroup.setEnabled(false);
 
         etGroupName = (EditText) v.findViewById(R.id.et_groupName);
         etGroupName.addTextChangedListener(new TextWatcher() {
@@ -61,6 +59,7 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateUIWithValidation();
             }
 
             @Override
@@ -81,13 +80,13 @@ public class CreateGroupFragment extends BaseContactsFragment implements View.On
     private void updateUIWithValidation() {
         bCreateGroup.setEnabled(
                 etGroupName.getText().length() > 0
-                        && getSelectedContacts().length > 1
+                        && getSelectedContacts().contains(",")
         );
     }
 
-    private String[] getSelectedContacts() {
+    private String getSelectedContacts() {
         SparseBooleanArray checkedContacts = lv.getCheckedItemPositions();
-        return getSelectedUsersJidsFromAdapterAsArray(checkedContacts);
+        return getSelectedUsersJidsFromAdapterAsString(checkedContacts);
     }
 
     @Override

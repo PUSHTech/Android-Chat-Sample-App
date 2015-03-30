@@ -1,40 +1,44 @@
 package com.pushtech.pushchat.androidapplicationexample.chat.gcm;
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity;
-import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
-import com.pushtech.sdk.chat.gcm.GCMEventIntentService;
-import com.pushtech.sdk.chat.service.CommunicationService;
-import com.pushtech.sdk.model.CampaignDelivery;
+import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationUtils;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.GCMPushIntentService;
+import com.pushtech.sdk.GroupChat;
 
 /**
  *
  */
-public final class ExampleGCMIntentService extends GCMEventIntentService {
+public final class ExampleGCMIntentService extends GCMPushIntentService {
+    @Override
+    public void newChatMessage(ChatMessage message) {
+        NotificationUtils.generateNewMessageNotification(
+                "messageReceived", message.getFrom().hashCode(),
+                this, message);
+    }
+
 
     @Override
-    protected Class getActivityClass() {
-        return ChatListActivity.class;
+    public void startTyping(String userJid) {
+        super.startTyping(userJid);
     }
 
     @Override
-    protected CommunicationService.ChatEventsListener getCommunicationServiceListener() {
-        return NotificationManager.with(this);
+    public void stopTyping(String userJid) {
+        super.stopTyping(userJid);
     }
 
     @Override
-    protected void onCampaignDeliveryDataReceived(Context context, CampaignDelivery pushDelivery) {
+    public void onInviteAGroup(GroupChat chat) {
+        super.onInviteAGroup(chat);
+    }
 
-        String text = pushDelivery.getText();
-        if (!TextUtils.isEmpty(pushDelivery.getUrl())) {
-            text += " " + pushDelivery.getUrl();
-        }
+    @Override
+    public void onJoinGroup(GroupChat chat) {
+        super.onJoinGroup(chat);
+    }
 
-        notify(this, pushDelivery.getTitle(), text,
-                pushDelivery.getUrl(), R.drawable.app_launcher);
+    @Override
+    public void onLeaveGroup(GroupChat chat) {
+        super.onLeaveGroup(chat);
     }
 }

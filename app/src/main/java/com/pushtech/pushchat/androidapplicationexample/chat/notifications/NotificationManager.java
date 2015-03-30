@@ -2,17 +2,16 @@ package com.pushtech.pushchat.androidapplicationexample.chat.notifications;
 
 import android.content.Context;
 
-import com.pushtech.sdk.chat.exception.SendMessageException;
-import com.pushtech.sdk.chat.model.Chat;
-import com.pushtech.sdk.chat.model.GroupChat;
-import com.pushtech.sdk.chat.model.User;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
-import com.pushtech.sdk.chat.service.CommunicationService;
+import com.pushtech.sdk.Chat;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.CommunicationServiceCallbacks;
+import com.pushtech.sdk.GroupChat;
+import com.pushtech.sdk.PushtechApp;
 
 /**
  *
  */
-public class NotificationManager implements CommunicationService.ChatEventsListener {
+public class NotificationManager implements CommunicationServiceCallbacks {
 
     private volatile static NotificationManager notificationManagerHelper;
     private String chatJid;
@@ -23,6 +22,72 @@ public class NotificationManager implements CommunicationService.ChatEventsListe
 
     private TypeOfActivity typeOfActivity;
 
+
+    @Override
+    public void newChatMessage(ChatMessage message) {
+        if (typeOfActivity == null) {
+            NotificationUtils.generateNewMessageNotification("messageReceived",
+                    message.getFrom().hashCode(),
+                    context, message);
+        } else {
+            switch (typeOfActivity) {
+                case CHAT:
+                    if (!message.getFrom().equals(chatJid)) {
+                        NotificationUtils.generateNewMessageNotification(
+                                "messageReceived", message.getFrom().hashCode(),
+                                context, message);
+                    }
+                    break;
+                case CHAT_LIST:
+                    break;
+                case SHOW_IMAGE:
+                case CONTACT_LIST:
+                case MESSAGE_CENTER:
+                case SETTINGS:
+                    NotificationUtils.generateNewMessageNotification("messageReceived",
+                            message.getFrom().hashCode(),
+                            context, message);
+                    break;
+
+            }
+        }
+
+    }
+
+    @Override
+    public void startTyping(String userJid) {
+        if (chatJid != null) {
+            if (userJid.equals(chatJid)) {
+                listenerTypingEvents.contactIsTyping(userJid);
+            }
+        }
+
+    }
+
+    @Override
+    public void stopTyping(String userJid) {
+        if (chatJid != null) {
+            if (userJid.equals(chatJid)) {
+                listenerTypingEvents.contactStoppedTyping(userJid);
+            }
+        }
+    }
+
+    @Override
+    public void onInviteAGroup(GroupChat chat) {
+
+    }
+
+    @Override
+    public void onJoinGroup(GroupChat chat) {
+
+    }
+
+    @Override
+    public void onLeaveGroup(GroupChat chat) {
+
+    }
+
     public enum TypeOfActivity {
         CHAT_LIST, CONTACT_LIST, CHAT,
         MESSAGE_CENTER, SETTINGS, SHOW_IMAGE
@@ -30,8 +95,9 @@ public class NotificationManager implements CommunicationService.ChatEventsListe
 
     private NotificationManager(Context context) {
         this.context = context;
-        CommunicationService.setOnChatEventsListener(this);
+        PushtechApp.with(context).getBaseManager().getCommunicationService().setListener(this);
     }
+
 
     public static NotificationManager with(Context context) {
         NotificationManager notificationManager = notificationManagerHelper;
@@ -100,52 +166,54 @@ public class NotificationManager implements CommunicationService.ChatEventsListe
         this.chatJid = null;
     }
 
-    @Override
+   /* @Override
     public void newChat(Chat chat) {
         if (chat.isGroupChat()) {
             if (this.listenerGroupEvents != null) {
                 this.listenerGroupEvents.onNewGroupChatCreated(chat);
             } else {
                 NotificationUtils.generateGroupInviteNotification("newChat",
-                        chat.getJid().hashCode(), context, chat.getName());
+                        //TODO add name;
+                        chat.getJid().hashCode(), context, chat.getJid());
             }
         }
         if (this.listenerChatEvents != null) {
             this.listenerChatEvents.onNewChatCreated(chat);
         }
 
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void deletedChat(Chat chat) {
         if (chat.isGroupChat()) {
             NotificationUtils.generateGroupDeletedNotification("deletedChat",
+                    //TODO add chat name;
                     chat.getJid().hashCode(), context, chat.getName());
         }
         if (this.listenerChatEvents != null) {
             this.listenerChatEvents.onDeleteChat(chat);
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void friendHasJoinedGroup(User user, GroupChat groupChat) {
 
     }
 
     @Override
-    public void friendHasLeftGroup(User user, String chatName) {
+    public void friendHasLeftGroup(User user, String groupChatName) {
 
-    }
+    }*/
 
-    @Override
-    public void messageReceived(ChatMessage chatMessage) {
+    /*@Override
+    public void messageReceived(MessageManager.TextMessage chatMessage) {
         if (typeOfActivity == null) {
             NotificationUtils.generateNewMessageNotification("messageReceived",
                     chatMessage.getChatJid().hashCode(),
                     context, chatMessage);
         } else {
             switch (typeOfActivity) {
-                case CHAT:
+                case chat:
                     if (!chatMessage.getChatJid().equals(chatJid)) {
                         NotificationUtils.generateNewMessageNotification(
                                 "messageReceived", chatMessage.getChatJid().hashCode(),
@@ -175,23 +243,7 @@ public class NotificationManager implements CommunicationService.ChatEventsListe
     @Override
     public void sendingMessageError(SendMessageException exception) {
 
-    }
+    }*/
 
-    @Override
-    public void contactIsTyping(String userJid) {
-        if (chatJid != null) {
-            if (userJid.equals(chatJid)) {
-                listenerTypingEvents.contactIsTyping(userJid);
-            }
-        }
-    }
 
-    @Override
-    public void contactStoppedTyping(String userJid) {
-        if (chatJid != null) {
-            if (userJid.equals(chatJid)) {
-                listenerTypingEvents.contactStoppedTyping(userJid);
-            }
-        }
-    }
 }

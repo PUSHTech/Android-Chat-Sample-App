@@ -6,14 +6,12 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pushtech.sdk.chat.db.contentvaluesop.UserContentValuesOp;
-import com.pushtech.sdk.chat.model.User;
+import com.pushtech.sdk.User;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
-import com.pushtech.pushchat.androidapplicationexample.R;
 
 /**
  * Created by goda87 on 27/08/14.
@@ -38,11 +36,10 @@ public class ContactsListCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
         ImageView iv_avatar = (ImageView) view.findViewById(R.id.iv_avatar);
-        UserContentValuesOp userContentValuesOp = new UserContentValuesOp();
-        User user = userContentValuesOp.buildFromCursor(cursor);
-        tv_name.setText(user.getAliasName());
+        User user = User.buildFromCursor(cursor);
+        tv_name.setText(user.getName());
 
-        String avatarUrl = user.getAvatarUrl();
+        String avatarUrl = user.getAvatarIcon();
         if (avatarUrl != null) {
             Picasso.with(context)
                     .load(avatarUrl)

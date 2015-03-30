@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pushtech-android-public-app.iml" filepath="$PROJECT_DIR$/pushtech-android-public-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pushtech-androidApplicationExample.iml" filepath="$PROJECT_DIR$/pushtech-androidApplicationExample.iml" />
     </modules>
   </component>
 </project>

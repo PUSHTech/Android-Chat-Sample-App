@@ -3,7 +3,6 @@ package com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,7 @@ import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.PictureOutgoingViewBinder;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.TextOutgoingViewBinder;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.binder.outgoing.VideoOutgoingViewBinder;
-import com.pushtech.sdk.chat.db.contentvaluesop.ChatMessageContentValuesOp;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
+import com.pushtech.sdk.ChatMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author goda87
  */
 public class ChatCursorAdapter extends CursorAdapter {
-    private  static final String TAG = ChatCursorAdapter.class.getSimpleName();
+    private static final String TAG = ChatCursorAdapter.class.getSimpleName();
 
     private Map<String, String> mUserNameCache = new ConcurrentHashMap<String, String>();
     private Context mContext;
@@ -77,8 +75,8 @@ public class ChatCursorAdapter extends CursorAdapter {
     }
 
     private CursorViewBinder getBinder(Cursor cursor) {
-        for(CursorViewBinder cursorViewBinder : mCursorViewBinders) {
-            if(cursorViewBinder.isBindableFrom(cursor)) {
+        for (CursorViewBinder cursorViewBinder : mCursorViewBinders) {
+            if (cursorViewBinder.isBindableFrom(cursor)) {
                 return cursorViewBinder;
             }
         }
@@ -88,7 +86,7 @@ public class ChatCursorAdapter extends CursorAdapter {
     private int getBinderId(Cursor cursor) {
         int i = 0;
         for (CursorViewBinder cursorViewBinder : mCursorViewBinders) {
-            if(cursorViewBinder.isBindableFrom(cursor)) {
+            if (cursorViewBinder.isBindableFrom(cursor)) {
                 return i;
             }
             i++;
@@ -99,16 +97,13 @@ public class ChatCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        CursorViewBinder binder = getBinder(cursor);
-        int layout = binder.getViewLayout();
         int viewResource = getBinder(cursor).getViewLayout();
-        return  inflater.inflate(viewResource, parent, false);
+        return inflater.inflate(viewResource, parent, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         CursorViewBinder binder = getBinder(cursor);
-        int layout = binder.getViewLayout();
         getBinder(cursor).bindView(view, context, cursor);
     }
 
@@ -118,7 +113,6 @@ public class ChatCursorAdapter extends CursorAdapter {
     }
 
     public ChatMessage getChatMessage(Cursor cursor) {
-        ChatMessageContentValuesOp chatMessageContentValuesOp = new ChatMessageContentValuesOp();
-        return chatMessageContentValuesOp.buildFromCursor(cursor);
+        return new ChatMessage().buildFromCursor(cursor);
     }
 }

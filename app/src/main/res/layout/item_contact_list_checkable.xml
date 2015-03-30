@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pushtech.pushchat.androidapplicationexample.chat.contacts.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pushtech.chatAndroidExample.chat.contacts.CheckableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:background="@drawable/list_item_background"
@@ -44,4 +45,4 @@
         android:background="@drawable/list_item_background"
         android:textColor="@color/table_text_selector" />
 
-</com.pushtech.pushchat.androidapplicationexample.chat.contacts.CheckableLinearLayout>
+</com.pushtech.chatAndroidExample.chat.contacts.CheckableLinearLayout>

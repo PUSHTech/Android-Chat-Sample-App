@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 
 /**

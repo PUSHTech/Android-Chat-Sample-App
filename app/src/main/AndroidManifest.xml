@@ -1,102 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pushtech.pushchat.androidapplicationexample" >
+    package="com.pushtech.sdk.chatAndroidExample">
 
-    <!-- PERMISSION/FEATURES -->
-    <!-- GCM -->
-    <permission
-        android:name="com.pushtech.pushchat.androidapplicationexample.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.pushtech.pushchat.androidapplicationexample.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+
+    <permission
+        android:name="char.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="chat.permission.C2D_MESSAGE" />
+
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Push" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".SplashActivity"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:theme="@style/Theme.Push.NoActionBar" >
+            android:name="com.pushtech.pushchat.androidapplicationexample.chat.SplashActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".chat.registration.RegistrationActivity"
-            android:label="@string/title_activity_registration" >
-        </activity>
 
-        <service android:name=".chat.gcm.ExampleGCMIntentService" />
+        <activity android:name="com.pushtech.pushchat.androidapplicationexample.chat.registration.RegistrationActivity" />
+        <activity android:name="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatDetailActivity" />
+        <activity android:name="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity" />
+        <activity android:name="com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity" />
+        <activity android:name="com.pushtech.pushchat.androidapplicationexample.chat.messagecenter.MessageCenterActivity" />
+        <activity android:name="com.pushtech.pushchat.androidapplicationexample.chat.settings.SettingsActivity" />
 
-        <receiver android:name=".chat.gcm.ExampleGCMBroadcastReceiver" >
+        <service android:name="com.pushtech.pushchat.androidapplicationexample.chat.gcm.ExampleGCMIntentService" />
+        <service android:name="com.pushtech.sdk.MessageService" />
+
+        <receiver android:name="com.pushtech.pushchat.androidapplicationexample.chat.gcm.ExampleGCMBroadcastReceiver">
             <intent-filter>
-
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.pushtech.pushchat" />
+                <category android:name="chat" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.pushtech.sdk.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <provider
-            android:name=".chat.providers.ExampleCampaignsProvider"
-            android:authorities="@string/provider_campaigns_authority"
+            android:name="com.pushtech.sdk.PushContentProvider"
+            android:authorities="${applicationId}"
             android:exported="false" />
-        <provider
-            android:name=".chat.providers.ExampleChatsProvider"
-            android:authorities="@string/provider_chats_authority"
-            android:exported="false" />
-        <provider
-            android:name=".chat.providers.ExampleUsersProvider"
-            android:authorities="@string/provider_users_authority"
-            android:exported="false" />
-        <activity
-            android:name=".chat.contacts.ContactsActivity"
-            android:label="@string/title_activity_contacts">
-        </activity>
-        <activity
-            android:name=".chat.settings.SettingsActivity"
-            android:label="@string/user_info" >
-        </activity>
-        <activity
-            android:name=".chat.messagecenter.MessageCenterActivity"
-            android:label="@string/message_center_title" >
-        </activity>
-        <activity
-            android:name=".chat.chatscreens.ChatListActivity"
-            android:label="@string/title_chat_list" >
-        </activity>
-        <activity
-            android:name=".chat.chatscreens.ChatDetailActivity"
-            android:label="@string/title_chat_detail"
-            android:parentActivityName=".chat.chatscreens.ChatListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.ChatListActivity" />
-        </activity>
-        <meta-data
-            android:name="com.crashlytics.ApiKey"
-            android:value="18a3a17c7eaae7237b0ba97feef3d7bd2cd84026" />
     </application>
 
 </manifest>

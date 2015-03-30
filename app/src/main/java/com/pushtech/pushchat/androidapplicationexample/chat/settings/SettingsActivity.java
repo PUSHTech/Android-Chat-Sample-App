@@ -16,13 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.pushchat.androidapplicationexample.SplashActivity;
+import com.pushtech.pushchat.androidapplicationexample.chat.SplashActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
-import com.pushtech.sdk.chat.manager.UserManager;
-import com.pushtech.sdk.chat.model.UserData;
-import com.pushtech.sdk.chat.utils.preferences.UserPreferences;
+import com.pushtech.sdk.Callbacks.GenericCallback;
+import com.pushtech.sdk.Callbacks.UserProfileCallback;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.User;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -35,14 +37,13 @@ import java.util.Date;
  */
 public class SettingsActivity extends ChatCommunicationTrackerActivity
         implements View.OnClickListener,
-        UserManager.ProfileUpdateCallback,
         UserImageSettingsIntentView.OnProfilePhotoItemSelect,
-        UserManager.LogOutCallback {
+        UserProfileCallback {
 
     private ImageView iv_userImage;
     private TextView tv_userName;
     private Button bt_logOut;
-    private UserData user;
+    private User user;
     private AlertDialog dialog;
     private ProgressDialog logoutDialog;
     private File photoFile;
@@ -53,7 +54,7 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        user = UserPreferences.getUserData(this);
+        user = PushtechApp.with(this).getBaseManager().getUserManager().getMyUser();
         initViews();
         setViews();
         setListeners();
@@ -93,7 +94,17 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
             case R.id.activity_settings_log_out:
                 logoutDialog = ProgressDialog.show(this, "",
                         "Loading. Please wait...", true);
-                UserManager.getInstance(this).logOutAndRemovePush(this);
+                PushtechApp.with(this).getBaseManager().getUserManager().logout(new GenericCallback() {
+                    @Override
+                    public void onSuccess() {
+                        logoutSuccessful();
+                    }
+
+                    @Override
+                    public void onError(PushtechError error) {
+                        logoutError();
+                    }
+                });
                 break;
             case R.id.activity_settings_user_image:
                 showDialogUpdateUserImage();
@@ -128,7 +139,7 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
     }
 
     private void updateUserName(String text) {
-        UserManager.getInstance(this).updateUserProfile(text, this);
+        PushtechApp.with(this).getBaseManager().getUserManager().updateProfileName(text, this);
 
     }
 
@@ -168,7 +179,8 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
                             .error(R.drawable.user_picture)
                             .resize(200, 200)
                             .centerCrop().into(iv_userImage);
-                    UserManager.getInstance(this).updateUserProfile(photoFile, this);
+                    PushtechApp.with(this).getBaseManager().getUserManager()
+                            .updateProfileImage(photoFile, this);
                     break;
                 default:
 
@@ -176,23 +188,13 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
         }
     }
 
-    @Override
-    public void onProfileUpdated(UserData userData) {
-        user = userData;
-        setViews();
-    }
-
-    @Override
-    public void onError(Exception exception) {
-
-    }
 
     @Override
     public void onGallerySelected() {
         dialog.dismiss();
         Intent i = new Intent(
                 Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, REQUEST_CODE_PICK_PHOTO);
 
 
@@ -227,8 +229,7 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
         dialog.dismiss();
     }
 
-    @Override
-    public void logoutSuccessful() {
+    private void logoutSuccessful() {
         logoutDialog.dismiss();
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -237,8 +238,8 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
         startActivity(intent);
     }
 
-    @Override
-    public void logoutError() {
+
+    private void logoutError() {
         logoutDialog.dismiss();
     }
 
@@ -252,5 +253,16 @@ public class SettingsActivity extends ChatCommunicationTrackerActivity
                 storageDir      /* directory */
         );
         return image;
+    }
+
+    @Override
+    public void onUserProfileAvailable(User user) {
+        this.user = user;
+        setViews();
+    }
+
+    @Override
+    public void onError(PushtechError error) {
+
     }
 }

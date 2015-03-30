@@ -13,12 +13,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.exception.NotValidCountryException;
-import com.pushtech.sdk.chat.manager.UserManager;
-import com.pushtech.sdk.chat.model.Country;
-import com.pushtech.sdk.chat.model.UserData;
-import com.pushtech.sdk.chat.utils.CountryHelper;
+import com.pushtech.sdk.Callbacks.GenericCallback;
+import com.pushtech.sdk.Country;
+import com.pushtech.sdk.CountryHelper;
+import com.pushtech.sdk.NotValidCountryException;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 import java.io.File;
 
@@ -27,8 +28,7 @@ import java.io.File;
  */
 public class RegistrationFragment extends Fragment
         implements View.OnClickListener,
-        UserManager.RegistrationCallback,
-        AdapterView.OnItemSelectedListener {
+        AdapterView.OnItemSelectedListener, GenericCallback {
 
     private Spinner countriesSpinner;
     private EditText phoneNumberET, userNameET;
@@ -36,15 +36,18 @@ public class RegistrationFragment extends Fragment
     private Button signInBtt;
 
     private CountriesAdapter countriesAdapter;
+    private com.pushtech.sdk.UserManager userManager;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment.
+     *
      * @return A new instance of fragment RegistrationFragment.
      */
     public static RegistrationFragment newInstance() {
         return new RegistrationFragment();
     }
+
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -55,6 +58,7 @@ public class RegistrationFragment extends Fragment
         View fragmentView = inflater.inflate(R.layout.fragment_registration, container, false);
         findViews(fragmentView);
         setUpViews();
+        userManager = PushtechApp.with(getActivity()).getBaseManager().getUserManager();
         return fragmentView;
     }
 
@@ -70,18 +74,22 @@ public class RegistrationFragment extends Fragment
         countriesAdapter = new CountriesAdapter(getActivity(), CountryHelper.getCountryList());
         countriesSpinner.setAdapter(countriesAdapter);
         countriesSpinner.setOnItemSelectedListener(this);
-        try {
-            countriesSpinner.setSelection(getPhoneDefaultCountryPosition());
-        } catch (NotValidCountryException e) {
-            e.printStackTrace();
+        int position = getPhoneDefaultCountryPosition();
+        if (position != -1) {
+            countriesSpinner.setSelection(position);
+        } else {
             countriesSpinner.setSelection(0);
         }
         signInBtt.setOnClickListener(this);
     }
 
-    private int getPhoneDefaultCountryPosition() throws NotValidCountryException {
-        return CountryHelper.getPositionOfCountryWithIsoCode(
-                UserManager.getInstance(getActivity()).getDefaultCountryISO());
+    private int getPhoneDefaultCountryPosition() {
+        try {
+            return CountryHelper.getPositionOfCountryWithIsoCode(
+                    CountryHelper.getDefaultCountryISO(getActivity()));
+        } catch (NotValidCountryException e) {
+            return 0;
+        }
     }
 
     private void changePhonePrefix(int callingCode) {
@@ -99,9 +107,8 @@ public class RegistrationFragment extends Fragment
      */
     protected final void registerUser(final String phoneNumber, final String userName,
                                       final Country country, final File avatarFile) {
-
-        UserManager.getInstance(getActivity().getApplicationContext())
-                .registerUser(phoneNumber, userName, country, avatarFile, this);
+        PushtechApp.with(getActivity()).getChatRegister()
+                .sendCodeRegistration(phoneNumber, userName, country, this);
     }
 
     private boolean allFieldsFilledIn() {
@@ -144,24 +151,11 @@ public class RegistrationFragment extends Fragment
         activity.openRegistrationValidationFragment();
     }
 
-    @Override
-    public void onRegistered(UserData userData) {
-        showActionBarProgress(false);
-        openRegistrationValidationFragment();
-        signInBtt.setEnabled(true);
-    }
-
-    @Override
-    public void onError(Exception e) {
-        showActionBarProgress(false);
-        signInBtt.setEnabled(true);
-        Toast.makeText(getActivity(),
-                R.string.registering_error_warning_toast, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        int phoneCallingCode = countriesAdapter.getItem(position).getPhoneCode();
+        int phoneCallingCode =
+                countriesAdapter.getItem(position).getPhoneCode();
         changePhonePrefix(phoneCallingCode);
     }
 
@@ -169,4 +163,25 @@ public class RegistrationFragment extends Fragment
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    @Override
+    public void onSuccess() {
+        showActionBarProgress(false);
+        openRegistrationValidationFragment();
+        signInBtt.setEnabled(true);
+
+    }
+
+    @Override
+    public void onError(PushtechError error) {
+        //TODO REMOVE ONLY FOR TEST
+        onSuccess();
+        /*showActionBarProgress(false);
+        signInBtt.setEnabled(true);
+        Toast.makeText(getActivity(),
+                R.string.registering_error_warning_toast, Toast.LENGTH_SHORT).show();*/
+
+    }
+
+
 }

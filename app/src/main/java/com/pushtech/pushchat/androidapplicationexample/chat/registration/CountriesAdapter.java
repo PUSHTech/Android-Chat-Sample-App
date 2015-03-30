@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.model.Country;
+import com.pushtech.sdk.Country;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 /**
  * Created by goda87 on 26/08/14.
@@ -49,7 +50,7 @@ public class CountriesAdapter extends BaseAdapter {
         if (rowView == null) {
             viewHolder = new ViewHolder();
             rowView = layoutInflater.inflate(R.layout.item_spinner_registration_countries, null);
-            viewHolder.countryNameTV = (TextView)rowView.findViewById(R.id.countryNameTV);
+            viewHolder.countryNameTV = (TextView) rowView.findViewById(R.id.countryNameTV);
             rowView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) rowView.getTag();

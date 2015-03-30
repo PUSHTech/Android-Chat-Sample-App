@@ -11,15 +11,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.manager.UserManager;
+import com.pushtech.sdk.Callbacks.GenericCallback;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.chatAndroidExample.R;
+
 
 /**
  * Created by goda87 on 26/08/14.
  */
 public class RegistrationValidationFragment extends Fragment
-        implements View.OnClickListener,
-        UserManager.SecretValidatedCallback {
+        implements View.OnClickListener, GenericCallback {
 
     private View finishSecretVerificationBtt;
     private EditText secretVerificationET;
@@ -28,13 +30,16 @@ public class RegistrationValidationFragment extends Fragment
     /**
      * Use this factory method to create a new instance of
      * this fragment.
+     *
      * @return A new instance of fragment RegistrationFragment.
      */
     public static RegistrationValidationFragment newInstance() {
         return new RegistrationValidationFragment();
     }
+
     public RegistrationValidationFragment() {
         // Required empty public constructor
+
     }
 
     @Override
@@ -78,8 +83,8 @@ public class RegistrationValidationFragment extends Fragment
     }
 
     protected void validateUserRegistration(final String secret) {
-        UserManager.getInstance(getActivity().getApplicationContext())
-                .validateUserSecret(secret, this);
+        PushtechApp.with(getActivity()).getChatRegister()
+                .registerWithSecretCode(secret, this);
     }
 
     private void registrationFinished() {
@@ -107,28 +112,17 @@ public class RegistrationValidationFragment extends Fragment
         }
     }
 
+
     @Override
-    public void onSecretValidated() {
-        showActionBarProgress(false);
+    public void onSuccess() {
         registrationFinished();
-        finishSecretVerificationBtt.setEnabled(true);
     }
 
     @Override
-    public void onSecretMistmatch() {
-        showActionBarProgress(false);
-        finishSecretVerificationBtt.setEnabled(true);
-        Toast.makeText(getActivity(),
-                R.string.registering_secret_mismatch_warning_toast,
-                Toast.LENGTH_SHORT).show();
+    public void onError(PushtechError error) {
+        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
     }
 
-    @Override
-    public void onError(Exception e) {
-        showActionBarProgress(false);
-        finishSecretVerificationBtt.setEnabled(true);
-        Toast.makeText(getActivity(),
-                R.string.registering_error_validating_secret_warning_toast,
-                Toast.LENGTH_SHORT).show();
-    }
+
 }

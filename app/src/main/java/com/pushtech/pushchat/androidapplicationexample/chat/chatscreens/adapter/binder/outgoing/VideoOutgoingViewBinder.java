@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.model.message.ChatMessage;
-import com.pushtech.sdk.chat.model.message.ContactVCardChatMessage;
-import com.pushtech.sdk.chat.model.message.VideoChatMessage;
+import com.pushtech.sdk.ChatMessage;
+import com.pushtech.sdk.VideoChatMessage;
+import com.pushtech.sdk.chatAndroidExample.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -25,15 +23,15 @@ public class VideoOutgoingViewBinder extends OutgoingViewBinder {
     public void bindView(View view, final Context context, Cursor cursor) {
         final VideoChatMessage message = (VideoChatMessage) getChatMessage(cursor);
         ImageView videoImageView = (ImageView) view.findViewById(R.id.iv_video);
-        if (!TextUtils.isEmpty(message.getLocalContentPath())) {
+        if (!TextUtils.isEmpty(message.getLocalPath())) {
             Picasso.with(context)
-                    .load(message.getThumbnailUrl())
+                    .load(message.getVideoThumbnail())
                     .centerCrop()
                     .resize(120, 120)
                     .into(videoImageView);
         } else {
             Picasso.with(context)
-                    .load(message.getLocalContentPath())
+                    .load(message.getLocalPath())
                     .centerCrop()
                     .resize(120, 120)
                     .into(videoImageView);
@@ -42,11 +40,11 @@ public class VideoOutgoingViewBinder extends OutgoingViewBinder {
         tv_view_video.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                if (fileExists(message.getLocalContentPath())) {
+                if (fileExists(message.getLocalPath())) {
                     intent.setDataAndType(
-                            Uri.parse("file://" + message.getLocalContentPath()), "video/*");
+                            Uri.parse("file://" + message.getLocalPath()), "video/*");
                 } else {
-                    intent.setDataAndType(Uri.parse(message.getContentUrl()), "video/*");
+                    intent.setDataAndType(Uri.parse(message.getVideoUrl()), "video/*");
                 }
                 context.startActivity(intent);
             }

@@ -3,25 +3,23 @@ package com.pushtech.pushchat.androidapplicationexample.chat.contacts;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
-import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
-import com.pushtech.sdk.chat.db.contract.UsersContract;
-import com.pushtech.sdk.chat.model.GroupChat;
-import com.pushtech.sdk.chat.model.User;
+import com.pushtech.sdk.GroupChat;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.User;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by goda87 on 8/09/14.
  */
-public class GroupInfoFragment extends BaseContactsFragment {
+public class GroupInfoFragment extends Fragment {
 
     private ListView lv;
 
@@ -32,6 +30,7 @@ public class GroupInfoFragment extends BaseContactsFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,44 +38,15 @@ public class GroupInfoFragment extends BaseContactsFragment {
 
         String groupJid = getArguments().getString(ContactsActivity.EXTRA_PARAM_GROUP_JID);
 
-        GroupChat chat = (GroupChat) ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                .findChatByJid(groupJid);
-        List<User> groupUsers = chat.getUsers();
-
-        String groupUsersJids = "";
-        if (groupUsers != null) {
-            List<String> groupUsersJidsList = new ArrayList<String>(groupUsers.size());
-            for (User user : groupUsers) {
-                groupUsersJidsList.add(user.getJid());
-            }
-
-            groupUsersJids = groupUsersJidsList.toString()
-                    .replace("[", "'").replace("]", "'")
-                    .replace(", ", "','");
-        }
-        Bundle args = new Bundle();
-        args.putString(BaseContactsFragment.SELECTION,
-                UsersContract.User.JID + " IN (" + groupUsersJids + ")");
-
-        getLoaderManager().initLoader(ContactsActivity.ADD_MEMBER, args, this);
-        adapter = new ContactsListCursorAdapter(getActivity(), null, R.layout.item_contact_list);
+        GroupChat chat = (GroupChat) PushtechApp.with(getActivity()).getBaseManager().getChatManager().getChatByJid(groupJid);
+        ArrayList<User> groupUsers = chat.getMembers();
+        ContactsAdapter adapter = new ContactsAdapter(getActivity(), groupUsers);
         lv = (ListView) v.findViewById(android.R.id.list);
-        lv.setOnItemClickListener(this);
         lv.setAdapter(adapter);
         lv.setEmptyView(v.findViewById(android.R.id.empty));
         lv.setSelector(new ColorDrawable(Color.TRANSPARENT));
         lv.setCacheColorHint(android.R.color.transparent);
         lv.setChoiceMode(ListView.CHOICE_MODE_NONE);
         return v;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getAppContacts();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 }

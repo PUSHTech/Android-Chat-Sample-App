@@ -2,17 +2,19 @@ package com.pushtech.pushchat.androidapplicationexample.chat.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
-import com.pushtech.sdk.chat.exception.ChatCreationException;
-import com.pushtech.sdk.chat.manager.ChatsManager;
-import com.pushtech.sdk.chat.model.Chat;
+import com.pushtech.sdk.Callbacks.GenericCallback;
+import com.pushtech.sdk.ChatManager;
+import com.pushtech.sdk.GroupChat;
+import com.pushtech.sdk.GroupDataCallback;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 public class ContactsActivity extends ChatCommunicationTrackerActivity
-        implements ChatsManager.CreateChatListener {
+        implements GenericCallback, GroupDataCallback {
     public static final String FRAGMENT_TYPE = "fragment_type";
     public static final int SINGLE_CHAT = 22;
     public static final int GROUP_CHAT = 23;
@@ -20,11 +22,14 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
     public static final int GROUP_INFO = 25;
     public static final String CHAT_JID_RESULT = "chat_jid_result";
     public static final String EXTRA_PARAM_GROUP_JID = "extra_param_group_jid";
+    private ChatManager chatManager;
+    public String chatJid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        chatManager = PushtechApp.with(this).getBaseManager().getChatManager();
         if (savedInstanceState == null) {
 
             switch (getIntent().getIntExtra(FRAGMENT_TYPE, 0)) {
@@ -62,37 +67,19 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
     }
 
     void createSingleChat(final String chatJid) {
-        try {
-            setProgressBarIndeterminateVisibility(true);
-            ChatsManager.getInstance(getApplicationContext())
-                    .newSingleChat()
-                    .setChatJid(chatJid)
-                    .create(this);
-        } catch (ChatCreationException e) {
-            showToast(R.string.contacts_createChat_error_warning_toast);
-        }
+        setProgressBarIndeterminateVisibility(true);
+        this.chatJid = chatJid;
+        chatManager.createNewChat(chatJid, this);
     }
 
-    void createGroupChat(final String groupName, final String[] members) {
-        for (int i = 0; i < members.length; i++) {
-            Log.d("GODA", String.format("members[%d]: %s", i, members[i]));
-        }
-        try {
-            setProgressBarIndeterminateVisibility(true);
-            ChatsManager.getInstance(getApplicationContext())
-                    .newGroupChat()
-                    .setGroupName(groupName)
-                    .setMembers(members)
-                    .create(this);
-        } catch (ChatCreationException e) {
-            showToast(R.string.contacts_createChat_error_warning_toast);
-        }
+    void createGroupChat(final String groupName, final String members) {
+        setProgressBarIndeterminateVisibility(true);
+        chatManager.createNewGroupChat(groupName, members, this);
     }
 
     void addMemeberToGroup(final String chatJid, final String userJid) {
-        ChatsManager.getInstance(this).addMemberToGroupChat(chatJid, userJid);
-        setActivityResult(userJid);
-        finish();
+        this.chatJid = chatJid;
+        chatManager.addMemberInGroup(chatJid, userJid, this);
     }
 
     void setActivityResult(String jid) {
@@ -104,16 +91,27 @@ public class ContactsActivity extends ChatCommunicationTrackerActivity
     /*
      * Called when the chat is successfully created.
      */
+
+
     @Override
-    public void onCreate(Chat chat) {
+    public void onSuccess() {
         setProgressBarIndeterminateVisibility(false);
-        setActivityResult(chat.getJid());
+        setActivityResult(this.chatJid);
         finish();
     }
 
     @Override
-    public void onError() {
+    public void onError(PushtechError error) {
         showToast(R.string.contacts_createChat_error_warning_toast);
         setProgressBarIndeterminateVisibility(false);
     }
+
+    @Override
+    public void onGroupDataAvailable(GroupChat group) {
+        setProgressBarIndeterminateVisibility(false);
+        setActivityResult(group.getJid());
+        finish();
+    }
+
+
 }

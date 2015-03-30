@@ -25,9 +25,7 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
         super(context, attrs);
     }
 
-    public CheckableLinearLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+
 
     // @see android.widget.Checkable#isChecked()
     public boolean isChecked() {

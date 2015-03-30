@@ -17,13 +17,17 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.contacts.ContactsActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.ChatCommunicationTrackerActivity;
 import com.pushtech.pushchat.androidapplicationexample.chat.notifications.NotificationManager;
-import com.pushtech.sdk.chat.manager.ChatsManager;
-import com.pushtech.sdk.chat.manager.MessagingManager;
-import com.pushtech.sdk.chat.model.Chat;
+import com.pushtech.sdk.Callbacks.GenericCallback;
+import com.pushtech.sdk.Chat;
+import com.pushtech.sdk.ChatManager;
+import com.pushtech.sdk.FileError;
+import com.pushtech.sdk.MessageManager;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +40,7 @@ import static android.provider.MediaStore.MediaColumns.DATA;
  * Created by goda87 on 2/09/14.
  */
 public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
-    implements LocationListener, NotificationManager.TypingEventListener {
+        implements LocationListener, NotificationManager.TypingEventListener {
 
     private static final int REQUEST_CODE_PICTURE_GALLERY = 1001;
     private static final int REQUEST_CODE_VIDEO_GALLERY = 1002;
@@ -50,14 +54,24 @@ public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
     protected Chat currentChat;
     private Location location;
     private File tmpFile;
+    private MessageManager messageManager;
+    private ChatManager chatManager;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+
         if (tmpFile != null) {
             String tmpFilePath = tmpFile.getAbsolutePath();
             savedInstanceState.putString(TMP_FILE_PATH, tmpFilePath);
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        messageManager = PushtechApp.with(this).getBaseManager().getMessageManager();
+        chatManager = PushtechApp.with(this).getBaseManager().getChatManager();
     }
 
     @Override
@@ -145,14 +159,16 @@ public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
             startActivityForResult(intent, REQUEST_CODE_PICTURE_CAMERA);
         }
     }
+
     private void takeVideoFromCamera() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 18 * 1024 * 1024); //18Mb
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
         startActivityForResult(intent, REQUEST_CODE_VIDEO_CAMERA);
     }
+
     private void showGalleryOptions() {
-        CharSequence galleryOptions[] = new CharSequence[] {
+        CharSequence galleryOptions[] = new CharSequence[]{
                 getString(R.string.menu_picture_from_gallery),
                 getString(R.string.menu_video_from_gallery)
         };
@@ -170,42 +186,60 @@ public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
         });
         builder.show();
     }
+
     private void selectPictureFromGallery() {
         Intent i = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, REQUEST_CODE_PICTURE_GALLERY);
     }
+
     private void selectVideoFromGallery() {
         Intent i = new Intent(Intent.ACTION_PICK,
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, REQUEST_CODE_VIDEO_GALLERY);
     }
+
     private void sendContact() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, REQUEST_CODE_CONTACT);
     }
+
     private void sendLocation() {
         if (location != null) {
-            MessagingManager.getInstance(this).newLocationMessage(currentChat.getJid()).
-                    setLocation(location.getLatitude(), location.getLongitude()).send();
+            messageManager.newLocationMessage(currentChat.getJid())
+                    .setLongitude(location.getLongitude())
+                    .setLatitude(location.getLatitude())
+                    .send();
         }
     }
+
     private void showGroupInfo() {
         Intent i = new Intent(this, ContactsActivity.class);
         i.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.GROUP_INFO);
         i.putExtra(ContactsActivity.EXTRA_PARAM_GROUP_JID, currentChat.getJid());
         startActivity(i);
     }
+
     private void addMemberToGroup() {
         Intent i = new Intent(this, ContactsActivity.class);
         i.putExtra(ContactsActivity.FRAGMENT_TYPE, ContactsActivity.ADD_MEMBER);
         i.putExtra(ContactsActivity.EXTRA_PARAM_GROUP_JID, currentChat.getJid());
         startActivity(i);
     }
+
     private void leaveGroup() {
-        ChatsManager.getInstance(this).deleteChat(currentChat.getJid(), Chat.Type.GROUPCHAT);
-        finish();
+        chatManager.deleteChat(currentChat, new GenericCallback() {
+            @Override
+            public void onSuccess() {
+                finish();
+            }
+
+            @Override
+            public void onError(PushtechError error) {
+                //TODO show error
+            }
+        });
     }
 
 
@@ -214,36 +248,51 @@ public abstract class ChatMenuActivity extends ChatCommunicationTrackerActivity
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_PICTURE_CAMERA:
-                    MessagingManager.PictureMessage ms
-                            = MessagingManager.getInstance(getApplicationContext())
-                                    .newPictureMessage(currentChat.getJid());
-                    ms.setPicture(tmpFile);
-                    ms.send();
+                    try {
+                        messageManager.newPictureMessage(currentChat.getJid())
+                                .setImage(tmpFile)
+                                .send();
+                    } catch (FileError fileError) {
+                        showToast(fileError.getMessage());
+                    }
                     break;
                 case REQUEST_CODE_VIDEO_CAMERA:
-                    MessagingManager.getInstance(getApplicationContext())
-                            .newVideoMessage(currentChat.getJid())
-                            .setVideoUri(data.getData()).send();
+                    try {
+                        messageManager.newVideoMessage(currentChat.getJid())
+                                .setVideo(data.getData())
+                                .send();
+                    } catch (FileError fileError) {
+                        showToast(fileError.getMessage());
+                    }
                     break;
                 case REQUEST_CODE_PICTURE_GALLERY:
-                    MessagingManager.getInstance(getApplicationContext())
-                            .newPictureMessage(currentChat.getJid())
-                            .setPicture(getFileFromContentURI(data.getData())).send();
+                    try {
+                        messageManager.newPictureMessage(currentChat.getJid())
+                                .setImage(getFileFromContentURI(data.getData())).send();
+                    } catch (FileError fileError) {
+                        showToast(fileError.getMessage());
+                    }
+
                     break;
                 case REQUEST_CODE_VIDEO_GALLERY:
                     File video = getFileFromContentURI(data.getData());
-                    if (video != null && video.length() < 18 * 1024 * 1024) {
-                        MessagingManager.getInstance(getApplicationContext())
-                                .newVideoMessage(currentChat.getJid())
-                                .setVideo(video).send();
-                    } else {
-                        showToast("Video too large");
+                    try {
+                        messageManager.newVideoMessage(currentChat.getJid())
+                                .setVideo(video)
+                                .send();
+                    } catch (FileError fileError) {
+                        showToast(fileError.getMessage());
                     }
+
                     break;
                 case REQUEST_CODE_CONTACT:
-                    MessagingManager.getInstance(this)
-                            .newContactMessage(currentChat.getJid())
-                            .setVCardUri(data.getData()).send();
+                    try {
+                        PushtechApp.with(this).getBaseManager().getMessageManager()
+                                .newContactMessage(currentChat.getJid())
+                                .setVCard(data.getData()).send();
+                    } catch (FileError fileError) {
+                        fileError.printStackTrace();
+                    }
                     break;
                 default:
 

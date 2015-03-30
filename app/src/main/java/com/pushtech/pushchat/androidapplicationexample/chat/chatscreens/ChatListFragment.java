@@ -14,13 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.pushtech.pushchat.androidapplicationexample.R;
 import com.pushtech.pushchat.androidapplicationexample.chat.chatscreens.adapter.ChatListCursorAdapter;
-import com.pushtech.sdk.chat.db.agent.ChatsDBAgent;
-import com.pushtech.sdk.chat.db.contentvaluesop.ChatContentValuesOp;
-import com.pushtech.sdk.chat.manager.ChatsManager;
-import com.pushtech.sdk.chat.manager.UserManager;
-import com.pushtech.sdk.chat.model.Chat;
+import com.pushtech.sdk.Callbacks.GenericCallback;
+import com.pushtech.sdk.Chat;
+import com.pushtech.sdk.PushtechApp;
+import com.pushtech.sdk.PushtechError;
+import com.pushtech.sdk.chatAndroidExample.R;
 
 /**
  * A list fragment representing a list of Chats. This fragment
@@ -34,6 +33,8 @@ import com.pushtech.sdk.chat.model.Chat;
 public class ChatListFragment extends ListFragment
         implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
+
+    private static final int CONTEXT_MENU_DELETE_INDEX = 0x01;
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -50,9 +51,6 @@ public class ChatListFragment extends ListFragment
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
-
-    private static final int CONTEXT_MENU_DELETE_INDEX = 0x01;
-
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -86,14 +84,9 @@ public class ChatListFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Refresh with server List of current chats.
-        UserManager.getInstance(getActivity()).startSync();
-
-        Cursor c = ChatsDBAgent.getInstance(getActivity().getApplicationContext())
-                .getAllChatsCursorWithMessageInfo();
+        Cursor c = PushtechApp.with(getActivity()).getBaseManager().getChatManager()
+                .getChatsWithLastMessages();
         setListAdapter(new ChatListCursorAdapter(getActivity(), c));
-
     }
 
     @Override
@@ -164,14 +157,26 @@ public class ChatListFragment extends ListFragment
     private void deleteChat(int position) {
         Cursor cursor = ((ChatListCursorAdapter) getListView().getAdapter()).getCursor();
         cursor.moveToPosition(position);
-        ChatContentValuesOp chatContentValuesOp = new ChatContentValuesOp();
-        Chat chat = chatContentValuesOp.buildFromCursor(cursor);
-        showToast(String.format(getString(R.string.context_menu_delete_chat),chat.getName()));
-        ChatsManager.getInstance(getActivity()).deleteChat(chat);
+        final Chat chat = new Chat().buildFromCursor(cursor);
+        showToast(String.format(getString(R.string.context_menu_delete_chat), chat.getChatName()));
+        PushtechApp.with(getActivity()).getBaseManager().getChatManager().deleteChat(chat, new GenericCallback() {
+            @Override
+            public void onSuccess() {
+                showToast(String.format(getString(R.string.context_menu_delete_succes_chat), chat.getChatName()));
+
+            }
+
+            @Override
+            public void onError(PushtechError error) {
+                showToast(String.format(getString(R.string.context_menu_delete_error_chat), chat.getChatName()));
+
+
+            }
+        });
     }
 
     private void showToast(String s) {
-        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

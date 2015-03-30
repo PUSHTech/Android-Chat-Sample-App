@@ -2,7 +2,8 @@ package com.pushtech.pushchat.androidapplicationexample.chat.notifications;
 
 import android.content.Context;
 
-import com.pushtech.sdk.chat.ChatCommunication;
+import com.pushtech.sdk.PushtechApp;
+
 
 /**
  *
@@ -26,14 +27,14 @@ public final class ChatCommunicationTracker {
     public synchronized void startTracking(Context context) {
         incrementTracker();
         if (numberOfTrackedActivities == 1) {
-            ChatCommunication.start(context);
+            PushtechApp.with(context).getBaseManager().getCommunicationService().start();
         }
     }
 
     public synchronized void stopTracking(Context context) {
         decrementTracker();
         if (numberOfTrackedActivities <= 0) {
-            ChatCommunication.stop(context);
+            PushtechApp.with(context).getBaseManager().getCommunicationService().stop();
         }
     }
 
