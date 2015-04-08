@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
 
     <permission
-        android:name="char.permission.C2D_MESSAGE"
+        android:name="chat.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="chat.permission.C2D_MESSAGE" />
 
