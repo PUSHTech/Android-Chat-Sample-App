@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--- PRODUCTION GODA
-    <string name="appId">5410314385216dacbe000010</string>
-    <string name="secret">cd271191330cb86fae158f4d476e3700</string>
-    <string name="gcmToken">470253607240</string>
-
-    DEVELOPMENT
-    <string name="appId">5357cdc5d535cfc121000001</string>
-    <string name="secret">83dd033dcf2b4dc370d5cf4a6d443bac</string>
-    <string name="gcmToken">470253607240</string>
-
-
-    PRODUCTION MARKETING -->
-    <string name="appId">5461ef1085216de23200006d</string>
-    <string name="secret">9c08e35298896aebd78ea5cf6a24d80f</string>
-    <string name="gcmToken">674589087749</string>
-   
-
-
+   <string name="appId"></string>
+   <string name="secret"></string>
+   <string name="gcmToken"></string>
 </resources>
