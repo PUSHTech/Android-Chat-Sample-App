@@ -2,6 +2,7 @@
 
 # Created by http://www.gitignore.io
 
+.idea/
 ### Android ###
 # Built application files
 *.apk
