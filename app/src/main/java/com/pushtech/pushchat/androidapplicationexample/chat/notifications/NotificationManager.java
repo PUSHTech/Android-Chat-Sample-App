@@ -95,7 +95,7 @@ public class NotificationManager implements CommunicationServiceCallbacks {
 
     private NotificationManager(Context context) {
         this.context = context;
-        PushtechApp.with(context).getBaseManager().getCommunicationService().setListener(this);
+        PushtechApp.with(context).getBaseManager().getCommunicationManager().setListener(this);
     }
 
 
@@ -166,84 +166,7 @@ public class NotificationManager implements CommunicationServiceCallbacks {
         this.chatJid = null;
     }
 
-   /* @Override
-    public void newChat(Chat chat) {
-        if (chat.isGroupChat()) {
-            if (this.listenerGroupEvents != null) {
-                this.listenerGroupEvents.onNewGroupChatCreated(chat);
-            } else {
-                NotificationUtils.generateGroupInviteNotification("newChat",
-                        //TODO add name;
-                        chat.getJid().hashCode(), context, chat.getJid());
-            }
-        }
-        if (this.listenerChatEvents != null) {
-            this.listenerChatEvents.onNewChatCreated(chat);
-        }
 
-    }*/
-
-   /* @Override
-    public void deletedChat(Chat chat) {
-        if (chat.isGroupChat()) {
-            NotificationUtils.generateGroupDeletedNotification("deletedChat",
-                    //TODO add chat name;
-                    chat.getJid().hashCode(), context, chat.getName());
-        }
-        if (this.listenerChatEvents != null) {
-            this.listenerChatEvents.onDeleteChat(chat);
-        }
-    }*/
-
-    /*@Override
-    public void friendHasJoinedGroup(User user, GroupChat groupChat) {
-
-    }
-
-    @Override
-    public void friendHasLeftGroup(User user, String groupChatName) {
-
-    }*/
-
-    /*@Override
-    public void messageReceived(MessageManager.TextMessage chatMessage) {
-        if (typeOfActivity == null) {
-            NotificationUtils.generateNewMessageNotification("messageReceived",
-                    chatMessage.getChatJid().hashCode(),
-                    context, chatMessage);
-        } else {
-            switch (typeOfActivity) {
-                case chat:
-                    if (!chatMessage.getChatJid().equals(chatJid)) {
-                        NotificationUtils.generateNewMessageNotification(
-                                "messageReceived", chatMessage.getChatJid().hashCode(),
-                                context, chatMessage);
-                    }
-                    break;
-                case CHAT_LIST:
-                    break;
-                case SHOW_IMAGE:
-                case CONTACT_LIST:
-                case MESSAGE_CENTER:
-                case SETTINGS:
-                    NotificationUtils.generateNewMessageNotification("messageReceived",
-                            chatMessage.getChatJid().hashCode(),
-                            context, chatMessage);
-                    break;
-
-            }
-        }
-    }
-
-    @Override
-    public void messageSent(ChatMessage chatMessage) {
-
-    }
-
-    @Override
-    public void sendingMessageError(SendMessageException exception) {
-
-    }*/
 
 
 }

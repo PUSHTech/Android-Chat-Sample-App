@@ -27,14 +27,14 @@ public final class ChatCommunicationTracker {
     public synchronized void startTracking(Context context) {
         incrementTracker();
         if (numberOfTrackedActivities == 1) {
-            PushtechApp.with(context).getBaseManager().getCommunicationService().start();
+            PushtechApp.with(context).getBaseManager().getCommunicationManager().start();
         }
     }
 
     public synchronized void stopTracking(Context context) {
         decrementTracker();
         if (numberOfTrackedActivities <= 0) {
-            PushtechApp.with(context).getBaseManager().getCommunicationService().stop();
+            PushtechApp.with(context).getBaseManager().getCommunicationManager().stop();
         }
     }
 

@@ -110,11 +110,11 @@ public class ChatDetailFragment extends Fragment
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().isEmpty()) {
                     sendButton.setEnabled(false);
-                    PushtechApp.with(getActivity()).getBaseManager().getCommunicationService()
+                    PushtechApp.with(getActivity()).getBaseManager().getCommunicationManager()
                             .stopTyping(chat.getJid());
                 } else {
                     sendButton.setEnabled(true);
-                    PushtechApp.with(getActivity()).getBaseManager().getCommunicationService()
+                    PushtechApp.with(getActivity()).getBaseManager().getCommunicationManager()
                             .startTyping(chat.getJid());
                 }
             }
